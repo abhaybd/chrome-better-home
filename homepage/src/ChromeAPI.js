@@ -1,4 +1,4 @@
-const ENABLE = false;
+const ENABLE = false && false;
 
 export async function storageGet(key, defaultVal) {
     if (ENABLE) {

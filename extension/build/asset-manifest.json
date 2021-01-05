@@ -2,10 +2,7 @@
   "files": {
     "main.css": "./main.css",
     "main.js": "./main.js",
-    "main.css.map": "./main.css.map",
-    "main.js.map": "./main.js.map",
     "static/js/1.7da93c7b.chunk.js": "./static/js/1.7da93c7b.chunk.js",
-    "static/js/1.7da93c7b.chunk.js.map": "./static/js/1.7da93c7b.chunk.js.map",
     "index.html": "./index.html",
     "static/media/logo.6ce24c58.svg": "./static/media/logo.6ce24c58.svg"
   },

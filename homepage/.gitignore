@@ -171,4 +171,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+.eslintcache
+
 # End of https://www.toptal.com/developers/gitignore/api/react,windows,webstorm

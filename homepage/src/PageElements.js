@@ -12,34 +12,46 @@ function urlToFavicon(url) {
     }
 }
 
+export function SiteGroup(props) {
+    const [sites, setSites] = useState([{title:"Gmail", url:"https://mail.google.com/mail/u/0/"}]);
+
+    function openConfig(index) {
+        props.showDialog(sites[index], (title, url) => {
+            let sitesCopy = [...sites];
+            sitesCopy[index] = {title: title, url:url};
+            setSites(sitesCopy);
+        });
+    }
+
+    return (
+        <div className="site-group">
+            {sites.map((site, i) => <Site key={i} showDialog={() => openConfig(i)} url={site.url}
+                                          title={site.title} />)}
+        </div>
+    );
+}
+
 export function Site(props) {
-    const [url, setUrl] = useState(props.url);
     const [favicon, setFavicon] = useState(null);
-    const [title, setTitle] = useState(props.title);
     const [showSettings, setShowSettings] = useState(false);
 
     useEffect(() => {
-        console.log("Url changed! new: " + url);
-        if (url) {
-            urlToFavicon(url).then(img => setFavicon(img));
+        console.log("Url changed! new: " + props.url);
+        if (props.url) {
+            urlToFavicon(props.url).then(img => setFavicon(img));
         }
-    }, [url]);
+    }, [props.url]);
 
     function settingsClicked(e) {
         e.preventDefault();
         console.log("Clicked!");
         if (props.showDialog) {
-            props.showDialog({title: title, url: url}, settingsUpdated);
+            props.showDialog();
         }
     }
 
-    function settingsUpdated(newTitle, newUrl) {
-        setTitle(newTitle);
-        setUrl(newUrl);
-    }
-
     return (
-        <a className={"site-container"} href={url} onMouseEnter={() => setShowSettings(true)}
+        <a className={"site-container"} href={props.url} onMouseEnter={() => setShowSettings(true)}
            onMouseLeave={() => setShowSettings(false)}>
             <div className={"options-button"} hidden={showSettings ? undefined : true} onClick={settingsClicked}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -52,7 +64,7 @@ export function Site(props) {
                 {favicon}
             </div>
             <div className="site-title">
-                {title}
+                {props.title}
             </div>
         </a>
     );

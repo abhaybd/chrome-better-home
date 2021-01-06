@@ -67,6 +67,7 @@ a.site-container {
     justify-content: center;
     border-radius: 10px;
     padding: 10px;
+    z-index: 999;
 }
 
 .close-config {

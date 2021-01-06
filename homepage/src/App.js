@@ -2,7 +2,7 @@ import './App.css';
 import {useState, useEffect} from 'react';
 import {getFaviconImg} from "./FaviconAPI";
 import {storageGet, storageSet} from "./Storage";
-import {ConfigDialog, Site} from "./PageElements";
+import {ConfigDialog, SiteGroup} from "./PageElements";
 
 function App() {
     const [foo, setFoo] = useState("null");
@@ -44,7 +44,7 @@ function App() {
                     {image}
                 </p>
                 <div>
-                    <Site url="https://mail.google.com/mail/u/0/" title="Gmail" showDialog={showDialog}/>
+                    <SiteGroup showDialog={showDialog} />
                 </div>
             </header>
         </div>

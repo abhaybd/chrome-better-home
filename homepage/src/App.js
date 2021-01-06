@@ -16,11 +16,11 @@ function App() {
         getFaviconImg("mail.google.com").then(data => setImage(data));
     }, []);
 
-    function showDialog(callback) {
+    function showDialog(currConfig, callback) {
         if (!dialogConfig.enabled) {
             console.log("Showing dialog!");
             console.log(callback);
-            setDialogConfig({enabled:true, callback:callback});
+            setDialogConfig({enabled:true, currConfig: currConfig, callback:callback});
         }
     }
 
@@ -28,7 +28,8 @@ function App() {
     console.log(dialogConfig);
     if (dialogConfig.enabled) {
         console.log("Set up!")
-        config = <ConfigDialog close={() => setDialogConfig({enabled:false})} callback={dialogConfig.callback}/>;
+        let {title, url} = dialogConfig.currConfig;
+        config = <ConfigDialog title={title} url={url} close={() => setDialogConfig({enabled:false})} callback={dialogConfig.callback}/>;
     }
 
     return (

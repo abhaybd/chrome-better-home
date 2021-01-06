@@ -29,7 +29,7 @@ export function Site(props) {
         e.preventDefault();
         console.log("Clicked!");
         if (props.showDialog) {
-            props.showDialog(settingsUpdated);
+            props.showDialog({title: title, url: url}, settingsUpdated);
         }
     }
 
@@ -59,8 +59,8 @@ export function Site(props) {
 }
 
 export function ConfigDialog(props) {
-    const [title, setTitle] = useState("");
-    const [url, setUrl] = useState("");
+    const [title, setTitle] = useState(props.title ?? "");
+    const [url, setUrl] = useState(props.url ?? "");
 
     function cancel() {
         console.log("Closing dialog!");

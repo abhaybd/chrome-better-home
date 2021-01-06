@@ -13,7 +13,7 @@ function urlToFavicon(url) {
 }
 
 export function SiteGroup(props) {
-    const [sites, setSites] = useState([{title:"Gmail", url:"https://mail.google.com/mail/u/0/"}]);
+    const [sites, setSites] = useState([{title:"Gmail", url:"https://mail.google.com/mail/u/0/"},{title:"Gmail", url:"https://mail.google.com/mail/u/0/"},{title:"Gmail", url:"https://mail.google.com/mail/u/0/"},{title:"Gmail", url:"https://mail.google.com/mail/u/0/"}]);
 
     function openConfig(index) {
         props.showDialog(sites[index], (title, url) => {
@@ -24,7 +24,7 @@ export function SiteGroup(props) {
     }
 
     return (
-        <div className="site-group">
+        <div className="site-group" style={{width: "50vw", height: "100px"}}>
             {sites.map((site, i) => <Site key={i} showDialog={() => openConfig(i)} url={site.url}
                                           title={site.title} />)}
         </div>

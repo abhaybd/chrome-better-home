@@ -98,3 +98,9 @@ a.site-container {
     border: none;
     border-radius: 5px;
 }
+
+.site-group {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}

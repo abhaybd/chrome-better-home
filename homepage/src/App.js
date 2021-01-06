@@ -1,7 +1,7 @@
 import './App.css';
 import {useState, useEffect} from 'react';
 import {getFaviconImg} from "./FaviconAPI";
-import {storageGet} from "./ChromeAPI";
+import {storageGet, storageSet} from "./Storage";
 import {Site} from "./PageElements";
 
 function App() {
@@ -9,7 +9,8 @@ function App() {
     const [image, setImage] = useState(null);
 
     useEffect(() => {
-        storageGet("key").then(val => setFoo(val));
+        setFoo(storageGet("key", "null"));
+        storageSet("key", "foobar");
 
         getFaviconImg("mail.google.com").then(data => setImage(data));
     }, []);
@@ -18,17 +19,6 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
                 <p>
                     Stored test: {foo}
                 </p>

@@ -1,8 +1,8 @@
-import logo from './logo.svg';
 import './App.css';
 import {useState, useEffect} from 'react';
 import {getFaviconImg} from "./FaviconAPI";
 import {storageGet} from "./ChromeAPI";
+import {Site} from "./PageElements";
 
 function App() {
     const [foo, setFoo] = useState("null");
@@ -18,7 +18,6 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
                 <p>
                     Edit <code>src/App.js</code> and save to reload.
                 </p>
@@ -37,6 +36,9 @@ function App() {
                     Favicon:
                     {image}
                 </p>
+                <div>
+                    <Site url="https://mail.google.com/mail/u/0/" title="Gmail" />
+                </div>
             </header>
         </div>
     );

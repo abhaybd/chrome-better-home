@@ -87,8 +87,13 @@ a.site-container {
 
 .dialog-buttons {
     width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
 }
 
 .dialog-buttons button {
-    width: 50%;
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
 }

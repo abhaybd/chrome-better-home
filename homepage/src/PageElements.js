@@ -39,7 +39,8 @@ export function Site(props) {
     }
 
     return (
-        <a className={"site-container"} href={url} onMouseEnter={() => setShowSettings(true)} onMouseLeave={() => setShowSettings(false)}>
+        <a className={"site-container"} href={url} onMouseEnter={() => setShowSettings(true)}
+           onMouseLeave={() => setShowSettings(false)}>
             <div className={"options-button"} hidden={showSettings ? undefined : true} onClick={settingsClicked}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                      className="bi bi-three-dots-vertical" viewBox="0 0 16 16">
@@ -92,10 +93,21 @@ export function ConfigDialog(props) {
                 URL:
                 <input type="text" value={url} onChange={e => setUrl(e.target.value)}/>
             </label>
-            <div className="dialog-buttons">
-                <button onClick={cancel}>Cancel</button>
-                <button onClick={save}>Save</button>
-            </div>
+            <table className="dialog-buttons">
+                <tbody>
+                    <tr>
+                        <td>
+                            <button onClick={null/*TODO: implement delete*/} style={{color: "white", background: "red"}}>Delete</button>
+                        </td>
+                        <td>
+                            <button onClick={cancel}>Cancel</button>
+                        </td>
+                        <td>
+                            <button onClick={save} style={{color: "white", background: "green"}}>Save</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     );
 }

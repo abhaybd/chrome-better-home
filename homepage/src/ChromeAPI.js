@@ -1,4 +1,13 @@
-const ENABLE = false;
+let ENABLE;
+
+try {
+    // eslint-disable-next-line no-undef
+    ENABLE = chrome.storage.get !== undefined;
+    console.log("Enabled persistence!");
+} catch {
+    ENABLE = false;
+    console.log("Disabled persistence!");
+}
 
 export async function storageGet(key, defaultVal) {
     if (ENABLE) {

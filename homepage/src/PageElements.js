@@ -16,12 +16,18 @@ export function SiteGroup(props) {
     const [sites, setSites] = useState([{title:"Gmail", url:"https://mail.google.com/mail/u/0/"},{title:"Gmail", url:"https://mail.google.com/mail/u/0/"},{title:"Gmail", url:"https://mail.google.com/mail/u/0/"},{title:"Gmail", url:"https://mail.google.com/mail/u/0/"}]);
 
     function openConfig(index) {
-        props.showDialog(sites[index], (title, url) => {
+        props.showDialog(sites[index], (title, url, del=false) => {
             let sitesCopy = [...sites];
-            sitesCopy[index] = {title: title, url:url};
+            if (del === true) {
+                sitesCopy.splice(index, 1);
+            } else {
+                sitesCopy[index] = {title: title, url:url};
+            }
             setSites(sitesCopy);
         });
     }
+
+    // TODO: implement add functionality. Maybe hook into context menu? Poll the window code?
 
     return (
         <div className="site-group" style={{width: "50vw", height: "100px"}}>
@@ -79,12 +85,14 @@ export function ConfigDialog(props) {
         props.close();
     }
 
+    function del() {
+        props.callback(null, null, true);
+        props.close();
+    }
+
     function save() {
         console.log("Closing dialog and saving!");
-        console.log(props.callback);
-        if (props.callback) {
-            props.callback(title, url);
-        }
+        props.callback(title, url);
         props.close();
     }
 
@@ -109,7 +117,7 @@ export function ConfigDialog(props) {
                 <tbody>
                     <tr>
                         <td>
-                            <button onClick={null/*TODO: implement delete*/} style={{color: "white", background: "red"}}>Delete</button>
+                            <button onClick={del} style={{color: "white", background: "red"}}>Delete</button>
                         </td>
                         <td>
                             <button onClick={cancel}>Cancel</button>

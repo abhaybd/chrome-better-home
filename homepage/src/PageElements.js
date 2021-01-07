@@ -102,7 +102,7 @@ export function Folder(props) {
         Promise.all(promises).then(setFavicons);
     }, [props.content]);
 
-    // TODO: figure out how to close the folder, also how to edit, delete, and add
+    // TODO: rework to enable adding to a folder
 
     let folderContent = null;
     if (props.isOpen === true) {

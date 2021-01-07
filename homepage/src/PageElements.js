@@ -13,25 +13,9 @@ function urlToFavicon(url) {
 }
 
 export function SiteGroup(props) {
-    const [sites, setSites] = useState([{title:"Gmail", url:"https://mail.google.com/mail/u/0/"},{title:"Gmail", url:"https://mail.google.com/mail/u/0/"},{title:"Gmail", url:"https://mail.google.com/mail/u/0/"},{title:"Gmail", url:"https://mail.google.com/mail/u/0/"}]);
-
-    function openConfig(index) {
-        props.showDialog(sites[index], (title, url, del=false) => {
-            let sitesCopy = [...sites];
-            if (del === true) {
-                sitesCopy.splice(index, 1);
-            } else {
-                sitesCopy[index] = {title: title, url:url};
-            }
-            setSites(sitesCopy);
-        });
-    }
-
-    // TODO: implement add functionality. Maybe hook into context menu? Poll the window code?
-
     return (
         <div className="site-group" style={{width: "50vw"}}>
-            {sites.map((site, i) => <Site key={i} showDialog={() => openConfig(i)} url={site.url}
+            {props.sites.map((site, i) => <Site key={i} showDialog={() => props.showDialog(i)} url={site.url}
                                           title={site.title} />)}
         </div>
     );
@@ -51,9 +35,7 @@ export function Site(props) {
     function settingsClicked(e) {
         e.preventDefault();
         console.log("Clicked!");
-        if (props.showDialog) {
-            props.showDialog();
-        }
+        props.showDialog();
     }
 
     return (

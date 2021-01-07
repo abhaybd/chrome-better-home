@@ -1,42 +1,47 @@
 import './App.css';
-import {useState, useEffect} from 'react';
-import {getFaviconImg} from "./FaviconAPI";
+import {useState} from 'react';
 import {storageGet, storageSet} from "./Storage";
 import {ConfigDialog, SiteGroup} from "./PageElements";
 
 function App() {
-    const [foo, setFoo] = useState("null");
-    const [image, setImage] = useState(null);
-    const [dialogConfig, setDialogConfig] = useState({enabled:false});
+    const [sites, setSites] = useState([{title:"Gmail", url:"https://mail.google.com/mail/u/0/"},{title:"Gmail", url:"https://mail.google.com/mail/u/0/"},{title:"Gmail", url:"https://mail.google.com/mail/u/0/"},{title:"Gmail", url:"https://mail.google.com/mail/u/0/"}]);
+    const [currentlyEditing, setCurrentlyEditing] = useState(null); // index of site being edited, or null
 
-    useEffect(() => {
-        setFoo(storageGet("key", "null"));
-        storageSet("key", "foobar");
-
-        getFaviconImg("mail.google.com").then(data => setImage(data));
-    }, []);
-
-    function showDialog(currConfig, callback) {
-        if (!dialogConfig.enabled) {
+    function showDialog(index) {
+        if (!currentlyEditing) {
             console.log("Showing dialog!");
-            console.log(callback);
-            setDialogConfig({enabled:true, currConfig: currConfig, callback:callback});
+            setCurrentlyEditing(index);
         }
     }
 
+    function closeDialog() {
+        if (currentlyEditing !== null) {
+            setCurrentlyEditing(null);
+        }
+    }
+
+    function updateSite(i, title, url, del=false) {
+        let sitesCopy = [...sites];
+        if (del === true) {
+            sitesCopy.splice(i, 1);
+        } else {
+            sitesCopy[i] = {title: title, url: url};
+        }
+        setSites(sitesCopy);
+    }
+
     let config = null;
-    console.log(dialogConfig);
-    if (dialogConfig.enabled) {
-        console.log("Set up!")
-        let {title, url} = dialogConfig.currConfig;
-        config = <ConfigDialog title={title} url={url} close={() => setDialogConfig({enabled:false})} callback={dialogConfig.callback}/>;
+    if (currentlyEditing !== null) {
+        let {title, url} = sites[currentlyEditing];
+        config = <ConfigDialog title={title} url={url} close={closeDialog}
+                               callback={(title, url, del) => updateSite(currentlyEditing, title, url, del)} />
     }
 
     return (
         <div className="App">
             <header className="App-header">
                 {config}
-                <SiteGroup showDialog={showDialog} />
+                <SiteGroup showDialog={showDialog} sites={sites} />
             </header>
         </div>
     );

@@ -36,16 +36,7 @@ function App() {
         <div className="App">
             <header className="App-header">
                 {config}
-                <p>
-                    Stored test: {foo}
-                </p>
-                <p>
-                    Favicon:
-                    {image}
-                </p>
-                <div>
-                    <SiteGroup showDialog={showDialog} />
-                </div>
+                <SiteGroup showDialog={showDialog} />
             </header>
         </div>
     );

@@ -30,7 +30,7 @@ export function SiteGroup(props) {
     // TODO: implement add functionality. Maybe hook into context menu? Poll the window code?
 
     return (
-        <div className="site-group" style={{width: "50vw", height: "100px"}}>
+        <div className="site-group" style={{width: "50vw"}}>
             {sites.map((site, i) => <Site key={i} showDialog={() => openConfig(i)} url={site.url}
                                           title={site.title} />)}
         </div>

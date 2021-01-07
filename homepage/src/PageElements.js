@@ -22,7 +22,7 @@ export function SiteGroup(props) {
     }
 
     return (
-        <div className="site-group" style={{width: "50vw"}}>
+        <div className="site-group" style={{width: props.width ?? "50vw"}}>
             {props.sites.map((data, i) => createElem(data, i))}
             <AddButton add={props.add} />
         </div>
@@ -34,7 +34,7 @@ export function AddButton(props) {
         <div className="site-container" style={{cursor: "pointer"}} onClick={props.add}>
             <div className="favicon-container" style={{color: "gray"}}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
-                     className="bi bi-plus" viewBox="0 0 16 16" style={{position: "relative", top:"6px"}}>
+                     className="bi bi-plus" viewBox="0 0 16 16">
                     <path
                         d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                 </svg>
@@ -84,13 +84,15 @@ export function Site(props) {
 }
 
 export function Folder(props) {
-    const [cols, setCols] = useState(Math.ceil(Math.sqrt(props.content.length)));
-    const [rows, setRows] = useState(Math.ceil(props.content.length / cols));
+    const [show, setShow] = useState(false);
+    const [cols, setCols] = useState(Math.ceil(Math.sqrt(props.content.length+1)));
+    const [rows, setRows] = useState(Math.ceil((props.content.length+1) / cols));
     const [favicons, setFavicons] = useState([]);
 
     useEffect(function() {
-        let newCols = Math.ceil(Math.sqrt(props.content.length));
-        let newRows = Math.ceil(props.content.length / newCols);
+        let len = props.content.length + 1;
+        let newCols = Math.ceil(Math.sqrt(len));
+        let newRows = Math.ceil(len / newCols);
         setCols(newCols);
         setRows(newRows);
 
@@ -98,8 +100,24 @@ export function Folder(props) {
         Promise.all(promises).then(setFavicons);
     }, [props.content]);
 
+    // TODO: figure out how to close the folder, also how to edit, delete, and add
+
+    let folderContent = null;
+    if (show === true) {
+        folderContent = (
+            <div className="folder">
+                <div style={{width: cols*100, height: rows*100}}>
+                    <SiteGroup width="100%" add={()=>false} sites={props.content}/>
+                </div>
+                <hr style={{margin: "0"}}/>
+                {props.title}
+            </div>
+        );
+    }
+
     return (
-        <div className="site-container folder" style={{cursor: "pointer"}} onClick={props.add}>
+        <div className="site-container" style={{cursor: "pointer"}} onClick={() => setShow(true)}>
+            {folderContent}
             <div className="favicon-container folder-icon">
                 {favicons}
             </div>

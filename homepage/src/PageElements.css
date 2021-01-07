@@ -112,6 +112,10 @@
 }
 
 .folder {
-    background-color: rgba(255, 255, 255, 0.4);
-
+    cursor: auto;
+    background-color: rgba(25, 40, 65, 0.9);
+    transform: translateY(-25%);
+    border-radius: 20px;
+    z-index: 1000;
+    font-size: 20px;
 }

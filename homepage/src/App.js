@@ -13,7 +13,6 @@ function App() {
             title: "Folder", isFolder: true, content: [
                 {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
                 {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
-                {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
                 {title: "Gmail", url: "https://mail.google.com/mail/u/0/"}
             ]
         }]);
@@ -33,6 +32,7 @@ function App() {
     }
 
     function updateSite(i, title, url, del = false) {
+        // TODO: How does this work for sites in folders? Maybe create a map and sites have unique keys?
         if (!url.match(/^http[s]?:\/\//)) {
             url = "http://" + url;
         }

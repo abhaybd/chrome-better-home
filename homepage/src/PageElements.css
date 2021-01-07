@@ -31,17 +31,14 @@
     position: absolute;
     background-color: white;
     border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .favicon-container img {
-    position: absolute;
-    margin: auto;
     width: 20px;
     height: 20px;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
 }
 
 .options-button {
@@ -104,4 +101,17 @@
     flex-flow: row wrap;
     justify-content: center;
     align-items: center;
+}
+
+.folder-icon {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.folder {
+    background-color: rgba(255, 255, 255, 0.4);
+
 }

@@ -2,21 +2,28 @@ import {useState, useEffect} from "react";
 import {getFaviconImg} from "./FaviconAPI";
 import "./PageElements.css";
 
-function urlToFavicon(url) {
+async function urlToFavicon(url) {
     const regex = /^(?:http[s]?:\/\/)?(?:www.)?([\w.]+)/;
     let host = url.match(regex)[1];
     if (host) {
-        return getFaviconImg(host);
+        return await getFaviconImg(host);
     } else {
         return null;
     }
 }
 
 export function SiteGroup(props) {
+    function createElem(data, i) {
+        if (data.isFolder) {
+            return <Folder key={i} content={data.content} title={data.title} />
+        } else {
+            return <Site key={i} showDialog={() => props.showDialog(i)} url={data.url} title={data.title}/>
+        }
+    }
+
     return (
         <div className="site-group" style={{width: "50vw"}}>
-            {props.sites.map((site, i) => <Site key={i} showDialog={() => props.showDialog(i)} url={site.url}
-                                                title={site.title}/>)}
+            {props.sites.map((data, i) => createElem(data, i))}
             <AddButton add={props.add} />
         </div>
     );
@@ -73,6 +80,33 @@ export function Site(props) {
                 {props.title}
             </div>
         </a>
+    );
+}
+
+export function Folder(props) {
+    const [cols, setCols] = useState(Math.ceil(Math.sqrt(props.content.length)));
+    const [rows, setRows] = useState(Math.ceil(props.content.length / cols));
+    const [favicons, setFavicons] = useState([]);
+
+    useEffect(function() {
+        let newCols = Math.ceil(Math.sqrt(props.content.length));
+        let newRows = Math.ceil(props.content.length / newCols);
+        setCols(newCols);
+        setRows(newRows);
+
+        let promises = props.content.slice(0, 4).map(site => urlToFavicon(site.url));
+        Promise.all(promises).then(setFavicons);
+    }, [props.content]);
+
+    return (
+        <div className="site-container folder" style={{cursor: "pointer"}} onClick={props.add}>
+            <div className="favicon-container folder-icon">
+                {favicons}
+            </div>
+            <div className="site-title">
+                {props.title}
+            </div>
+        </div>
     );
 }
 

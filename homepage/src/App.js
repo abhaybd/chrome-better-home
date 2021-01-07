@@ -4,7 +4,19 @@ import {storageGet, storageSet} from "./Storage";
 import {ConfigDialog, SiteGroup} from "./PageElements";
 
 function App() {
-    const [sites, setSites] = useState([{title:"Gmail", url:"https://mail.google.com/mail/u/0/"},{title:"Gmail", url:"https://mail.google.com/mail/u/0/"},{title:"Gmail", url:"https://mail.google.com/mail/u/0/"},{title:"Gmail", url:"https://mail.google.com/mail/u/0/"}]);
+    const [sites, setSites] = useState([
+        {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
+        {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
+        {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
+        {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
+        {
+            title: "Folder", isFolder: true, content: [
+                {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
+                {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
+                {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
+                {title: "Gmail", url: "https://mail.google.com/mail/u/0/"}
+            ]
+        }]);
     const [currentlyEditing, setCurrentlyEditing] = useState(null); // index of site being edited, or null
 
     function showDialog(index) {
@@ -20,7 +32,7 @@ function App() {
         }
     }
 
-    function updateSite(i, title, url, del=false) {
+    function updateSite(i, title, url, del = false) {
         if (!url.match(/^http[s]?:\/\//)) {
             url = "http://" + url;
         }
@@ -35,7 +47,7 @@ function App() {
 
     function add() {
         let sitesCopy = [...sites];
-        sitesCopy.push({title:"", url:""});
+        sitesCopy.push({title: "", url: ""});
         setSites(sitesCopy);
     }
 
@@ -43,7 +55,7 @@ function App() {
     if (currentlyEditing !== null) {
         let {title, url} = sites[currentlyEditing];
         config = <ConfigDialog title={title} url={url} close={closeDialog}
-                               callback={(title, url, del) => updateSite(currentlyEditing, title, url, del)} />
+                               callback={(title, url, del) => updateSite(currentlyEditing, title, url, del)}/>
     }
 
     return (

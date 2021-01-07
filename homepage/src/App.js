@@ -21,12 +21,21 @@ function App() {
     }
 
     function updateSite(i, title, url, del=false) {
+        if (!url.match(/^http[s]?:\/\//)) {
+            url = "http://" + url;
+        }
         let sitesCopy = [...sites];
         if (del === true) {
             sitesCopy.splice(i, 1);
         } else {
             sitesCopy[i] = {title: title, url: url};
         }
+        setSites(sitesCopy);
+    }
+
+    function add() {
+        let sitesCopy = [...sites];
+        sitesCopy.push({title:"", url:""});
         setSites(sitesCopy);
     }
 
@@ -41,7 +50,7 @@ function App() {
         <div className="App">
             <header className="App-header">
                 {config}
-                <SiteGroup showDialog={showDialog} sites={sites} />
+                <SiteGroup showDialog={showDialog} sites={sites} add={add}/>
             </header>
         </div>
     );

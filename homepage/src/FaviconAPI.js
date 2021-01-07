@@ -5,7 +5,7 @@ storageSet("mail.google.com", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABA
 export async function getFaviconData(host) {
     let cached = storageGet(host);
     if (cached) {
-        console.log("Using cache for: " + host);
+        // console.log("Using cache for: " + host);
         return cached;
     }
     let response = await fetch("https://cors-anywhere.herokuapp.com/https://s2.googleusercontent.com/s2/favicons?domain=" + host);

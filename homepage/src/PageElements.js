@@ -1,4 +1,5 @@
 import {useState, useEffect} from "react";
+import React from "react";
 import {getFaviconImg} from "./FaviconAPI";
 import "./PageElements.css";
 
@@ -14,10 +15,12 @@ async function urlToFavicon(url) {
 
 export function SiteGroup(props) {
     function createElem(data, i) {
-        if (data.isFolder) {
-            return <Folder key={i} content={data.content} title={data.title} />
+        let id = [...props.id, i];
+        if (data.content) { // data is folder
+            return <Folder key={i} id={id} content={data.content} title={data.title} isOpen={data.isOpen}
+                           setOpen={props.setOpen} showDialog={props.showDialog}/>
         } else {
-            return <Site key={i} showDialog={() => props.showDialog(i)} url={data.url} title={data.title}/>
+            return <Site key={i} id={id} showDialog={props.showDialog} url={data.url} title={data.title}/>
         }
     }
 
@@ -60,7 +63,7 @@ export function Site(props) {
     function settingsClicked(e) {
         e.preventDefault();
         console.log("Clicked!");
-        props.showDialog();
+        props.showDialog(props.id);
     }
 
     return (
@@ -84,7 +87,6 @@ export function Site(props) {
 }
 
 export function Folder(props) {
-    const [show, setShow] = useState(false);
     const [cols, setCols] = useState(Math.ceil(Math.sqrt(props.content.length+1)));
     const [rows, setRows] = useState(Math.ceil((props.content.length+1) / cols));
     const [favicons, setFavicons] = useState([]);
@@ -103,11 +105,11 @@ export function Folder(props) {
     // TODO: figure out how to close the folder, also how to edit, delete, and add
 
     let folderContent = null;
-    if (show === true) {
+    if (props.isOpen === true) {
         folderContent = (
-            <div className="folder">
+            <div className="folder" onClick={e => e.stopPropagation()}>
                 <div style={{width: cols*100, height: rows*100}}>
-                    <SiteGroup width="100%" add={()=>false} sites={props.content}/>
+                    <SiteGroup id={props.id} width="100%" add={()=>false} sites={props.content} showDialog={props.showDialog}/>
                 </div>
                 <hr style={{margin: "0"}}/>
                 {props.title}
@@ -116,10 +118,10 @@ export function Folder(props) {
     }
 
     return (
-        <div className="site-container" style={{cursor: "pointer"}} onClick={() => setShow(true)}>
+        <div className="site-container" style={{cursor: "pointer"}} onClick={e => e.stopPropagation() || props.setOpen(props.id, true)}>
             {folderContent}
             <div className="favicon-container folder-icon">
-                {favicons}
+                {favicons.map((f,i) => <React.Fragment key={i}>{f}</React.Fragment>)}
             </div>
             <div className="site-title">
                 {props.title}

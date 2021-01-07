@@ -116,6 +116,6 @@
     background-color: rgba(25, 40, 65, 0.9);
     transform: translateY(-25%);
     border-radius: 20px;
-    z-index: 1000;
+    z-index: 100;
     font-size: 20px;
 }

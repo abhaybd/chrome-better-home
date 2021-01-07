@@ -1,6 +1,6 @@
 import './App.css';
 import {useState} from 'react';
-import {storageGet, storageSet} from "./Storage";
+import React from "react";
 import {ConfigDialog, SiteGroup} from "./PageElements";
 
 function App() {
@@ -10,18 +10,18 @@ function App() {
         {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
         {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
         {
-            title: "Folder", isFolder: true, content: [
+            title: "Folder", isOpen: false, content: [
                 {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
                 {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
                 {title: "Gmail", url: "https://mail.google.com/mail/u/0/"}
             ]
         }]);
-    const [currentlyEditing, setCurrentlyEditing] = useState(null); // index of site being edited, or null
+    const [currentlyEditing, setCurrentlyEditing] = useState(null); // id of site being edited, or null
 
-    function showDialog(index) {
+    function showDialog(id) {
         if (!currentlyEditing) {
             console.log("Showing dialog!");
-            setCurrentlyEditing(index);
+            setCurrentlyEditing(id);
         }
     }
 
@@ -31,38 +31,96 @@ function App() {
         }
     }
 
-    function updateSite(i, title, url, del = false) {
-        // TODO: How does this work for sites in folders? Maybe create a map and sites have unique keys?
-        if (!url.match(/^http[s]?:\/\//)) {
+    function cloneData() {
+        let copy = [];
+        for (let data of sites) {
+            if (data.content) {
+                let content = [];
+                for (let site of data.content) {
+                    content.push(Object.assign({}, site));
+                }
+                let d = Object.assign({}, data);
+                d.content = content;
+                copy.push(d);
+            } else {
+                copy.push(Object.assign({}, data));
+            }
+        }
+        return copy;
+    }
+
+    function setFolderOpen(id, open) {
+        let copy = cloneData();
+        console.log(id);
+        console.log(copy);
+        copy[id[0]].isOpen = true;
+        setSites(copy);
+    }
+
+    function closeAllFolders() {
+        let clone = cloneData();
+        for (let data of clone) {
+            if (data.content && data.isOpen === true) {
+                data.isOpen = false;
+            }
+        }
+        setSites(clone);
+    }
+
+    function updateSite(id, title, url, del = false) {
+        if (url && !url.match(/^http[s]?:\/\//)) {
             url = "http://" + url;
         }
-        let sitesCopy = [...sites];
-        if (del === true) {
-            sitesCopy.splice(i, 1);
+        let sitesCopy = cloneData();
+        let arr, i;
+        if (id.length === 1) {
+            arr = sitesCopy;
+            i = id[0];
         } else {
-            sitesCopy[i] = {title: title, url: url};
+            arr = sitesCopy[id[0]].content;
+            i = id[1];
+        }
+        console.log(id);
+        console.log(arr);
+        console.log(i);
+        if (del === true) {
+            arr.splice(i, 1);
+        } else {
+            arr[i].title = title;
+            arr[i].url = url;
         }
         setSites(sitesCopy);
     }
 
     function add() {
-        let sitesCopy = [...sites];
+        let sitesCopy = cloneData();
         sitesCopy.push({title: "", url: ""});
         setSites(sitesCopy);
     }
 
+    function getSite(id) {
+        if (id.length === 1) {
+            return sites[id[0]];
+        } else {
+            return sites[id[0]].content[id[1]];
+        }
+    }
+
     let config = null;
     if (currentlyEditing !== null) {
-        let {title, url} = sites[currentlyEditing];
+        console.log(currentlyEditing);
+        let {title, url} = getSite(currentlyEditing);
         config = <ConfigDialog title={title} url={url} close={closeDialog}
                                callback={(title, url, del) => updateSite(currentlyEditing, title, url, del)}/>
     }
 
     return (
         <div className="App">
-            <header className="App-header">
-                {config}
-                <SiteGroup showDialog={showDialog} sites={sites} add={add}/>
+            <header className="App-header" onClick={() => closeAllFolders()}>
+                <div onClick={e => e.stopPropagation()}>
+                    {config}
+                    <SiteGroup id={[]} showDialog={showDialog} sites={sites} add={add} setOpen={setFolderOpen}/>
+                </div>
             </header>
         </div>
     );

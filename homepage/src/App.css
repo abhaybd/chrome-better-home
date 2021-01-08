@@ -2,8 +2,8 @@
   text-align: center;
 }
 
-body {
-  background-image: url("space.jpg");
+html {
+  background: url("space.jpg") center;
   background-size: cover;
 }
 

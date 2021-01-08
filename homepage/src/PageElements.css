@@ -70,3 +70,21 @@
     z-index: 100;
     font-size: 20px;
 }
+
+.settings-button-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    width: 50px;
+    height: 50px;
+}
+
+.settings-button {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.5);
+    width: 25px;
+    height: 25px;
+    float: right;
+    margin: 10px;
+}

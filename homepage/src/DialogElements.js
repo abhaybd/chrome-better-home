@@ -1,6 +1,19 @@
 import React, {useState} from "react";
 import "./DialogElements.css";
 
+export function SettingsDialog(props) {
+    return (
+        <div className="dialog settings-dialog">
+            <DialogClose close={props.close}/>
+            <h2>Settings</h2>
+            <label>
+                <input type="checkbox" checked={props.hideAdd} onChange={e => props.setHideAdd(e.target.checked)}/>
+                Hide add button
+            </label>
+        </div>
+    );
+}
+
 export function AddDialog(props) {
     const [type, setType] = useState("site");
     const [title, setTitle] = useState("");
@@ -21,8 +34,8 @@ export function AddDialog(props) {
     }
 
     return (
-        <div className="config-dialog" style={{height: "150px"}}>
-            <ConfigClose close={cancel}/>
+        <div className="dialog" style={{height: "150px"}}>
+            <DialogClose close={cancel}/>
             <select value={type} onChange={e => setType(e.target.value)}>
                 <option value="site">Site</option>
                 {folderOption}
@@ -54,14 +67,14 @@ export function ConfigDialog(props) {
     }
 
     return (
-        <div className="config-dialog">
-            <ConfigClose close={cancel}/>
+        <div className="dialog">
+            <DialogClose close={cancel}/>
             <ConfigBody title={title} setTitle={setTitle} url={url} setUrl={setUrl} del={del} cancel={cancel} save={save}/>
         </div>
     );
 }
 
-function ConfigClose(props) {
+function DialogClose(props) {
     return (
         <div className="close-config" onClick={props.close}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x"

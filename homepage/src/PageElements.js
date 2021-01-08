@@ -16,12 +16,35 @@ async function urlToFavicon(url) {
     }
 }
 
+export function SettingsButton(props) {
+    const [show, setShow] = useState(false);
+
+    let button = null;
+    if(show) {
+        button = (
+            <div className="settings-button" onClick={() => props.openSettings()}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                     className="bi bi-gear-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+                </svg>
+            </div>
+        );
+    }
+
+    return (
+        <div className="settings-button-container" onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
+            {button}
+        </div>
+    );
+}
+
 export function SiteGroup(props) {
     function createElem(data, i) {
         let id = [...props.id, i];
         if (data.content) { // data is folder
             return <Folder key={i} id={id} content={data.content} title={data.title} isOpen={data.isOpen}
-                           setOpen={props.setOpen} showDialog={props.showDialog} add={props.add}/>
+                           setOpen={props.setOpen} showDialog={props.showDialog} add={props.add} hideAdd={props.hideAdd}/>
         } else {
             return <Site key={i} id={id} showDialog={props.showDialog} url={data.url} title={data.title}/>
         }
@@ -30,7 +53,7 @@ export function SiteGroup(props) {
     return (
         <div className="site-group" style={{width: props.width ?? "50vw"}}>
             {props.sites.map((data, i) => createElem(data, i))}
-            <AddButton add={() => props.add(props.id)} />
+            {props.hideAdd ? null : <AddButton add={() => props.add(props.id)} />}
         </div>
     );
 }
@@ -93,9 +116,9 @@ export function Folder(props) {
     const [showSettings, setShowSettings] = useState(false);
     const [favicons, setFavicons] = useState([]);
 
-    let len = props.content.length + 1; // add one to account for add icon
-    let cols = Math.ceil(Math.sqrt(len));
-    let rows = Math.ceil(len / cols);
+    let len = props.content.length + (props.hideAdd ? 0 : 1); // add one to account for add icon, if not hidden
+    let cols = Math.max(2, Math.ceil(Math.sqrt(len)));
+    let rows = Math.max(1, Math.ceil(len / cols));
 
     useEffect(function() {
         let promises = props.content.slice(0, 4).map(site => urlToFavicon(site.url));
@@ -113,7 +136,8 @@ export function Folder(props) {
         folderContent = (
             <div className="folder" onClick={e => e.stopPropagation()}>
                 <div style={{width: cols*100, height: rows*100}}>
-                    <SiteGroup id={props.id} width="100%" add={props.add} sites={props.content} showDialog={props.showDialog}/>
+                    <SiteGroup id={props.id} width="100%" add={props.add} sites={props.content} hideAdd={props.hideAdd}
+                               showDialog={props.showDialog}/>
                 </div>
                 <hr style={{margin: "0"}}/>
                 {props.title}

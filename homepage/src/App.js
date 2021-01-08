@@ -1,7 +1,7 @@
 import './App.css';
 import React, {useState, useEffect} from 'react';
-import {SiteGroup} from "./PageElements";
-import {AddDialog, ConfigDialog} from "./DialogElements";
+import {SettingsButton, SiteGroup} from "./PageElements";
+import {AddDialog, ConfigDialog, SettingsDialog} from "./DialogElements";
 import {storageGet, storageSet} from "./Storage";
 
 const defaultSites = [
@@ -11,20 +11,11 @@ const defaultSites = [
 ];
 
 function App() {
-    const [sites, setSites] = useState([
-        {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
-        {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
-        {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
-        {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
-        {
-            title: "Folder", isOpen: false, content: [
-                {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
-                {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
-                {title: "Gmail", url: "https://mail.google.com/mail/u/0/"}
-            ]
-        }]);
+    const [sites, setSites] = useState([]);
+    const [showSettings, setShowSettings] = useState(false);
     const [currentlyEditing, setCurrentlyEditing] = useState(null); // id of site being edited, or null
     const [currentlyAddingTo, setCurrentlyAddingTo] = useState(null); // id of group being added to, or null
+    const [hideAdd, setHideAdd] = useState(false);
 
     useEffect(function() {
         let saved = storageGet("layout", undefined, true);
@@ -34,11 +25,17 @@ function App() {
             setSites(defaultSites);
             storageSet("layout", defaultSites, true);
         }
+
+        setHideAdd(storageGet("hideAdd", false, true));
     }, []);
 
     useEffect(function() {
         storageSet("layout", sites, true);
     }, [sites]);
+
+    useEffect(function() {
+        storageSet("hideAdd", hideAdd);
+    }, [hideAdd]);
 
     function showConfigDialog(id) {
         if (!currentlyEditing) {
@@ -152,14 +149,23 @@ function App() {
                                callback={(title, url) => add(id, title, url)}/>;
     }
 
+    let settingsDialog = null;
+    if (showSettings) {
+        settingsDialog = <SettingsDialog hideAdd={hideAdd} setHideAdd={setHideAdd} close={() => setShowSettings(false)}/>;
+    }
+
     return (
         <div className="App">
             <header className="App-header" onClick={() => closeAllFolders()}>
                 <div onClick={e => e.stopPropagation()}>
+                    <SettingsButton openSettings={() => setShowSettings(true)}/>
+                </div>
+                <div onClick={e => e.stopPropagation()}>
+                    {settingsDialog}
                     {config}
                     {addDialog}
                     <SiteGroup id={[]} showDialog={showConfigDialog} sites={sites} add={showAddDialog}
-                               setOpen={setFolderOpen}/>
+                               setOpen={setFolderOpen} hideAdd={hideAdd}/>
                 </div>
             </header>
         </div>

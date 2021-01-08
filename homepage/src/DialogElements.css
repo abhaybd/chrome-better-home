@@ -1,4 +1,4 @@
-.config-dialog {
+.dialog {
     background-color: white;
     color: black;
     height: 100px;
@@ -30,7 +30,7 @@
     height: 24px;
 }
 
-.config-dialog input[type=text] {
+.dialog input[type=text] {
     margin-left: 5px;
 }
 
@@ -45,4 +45,17 @@
     width: 100%;
     border: none;
     border-radius: 5px;
+}
+
+div.settings-dialog {
+    color: black;
+    justify-content: flex-start;
+}
+
+.settings-dialog h2 {
+    margin: 10px 0;
+}
+
+.settings-dialog input {
+    margin-right: 10px;
 }

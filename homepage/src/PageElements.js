@@ -88,17 +88,13 @@ export function Site(props) {
 }
 
 export function Folder(props) {
-    const [cols, setCols] = useState(Math.ceil(Math.sqrt(props.content.length+1)));
-    const [rows, setRows] = useState(Math.ceil((props.content.length+1) / cols));
     const [favicons, setFavicons] = useState([]);
 
-    useEffect(function() {
-        let len = props.content.length + 1;
-        let newCols = Math.ceil(Math.sqrt(len));
-        let newRows = Math.ceil(len / newCols);
-        setCols(newCols);
-        setRows(newRows);
+    let len = props.content.length + 1; // add one to account for add icon
+    let cols = Math.ceil(Math.sqrt(len));
+    let rows = Math.ceil(len / cols);
 
+    useEffect(function() {
         let promises = props.content.slice(0, 4).map(site => urlToFavicon(site.url));
         Promise.all(promises).then(setFavicons);
     }, [props.content]);
@@ -119,7 +115,7 @@ export function Folder(props) {
     }
 
     return (
-        <div className="site-container" style={{cursor: "pointer"}} onClick={e => e.stopPropagation() || props.setOpen(props.id, true)}>
+        <div className="site-container" style={{cursor: "pointer"}} onClick={() => props.setOpen(props.id, true)}>
             {folderContent}
             <div className="favicon-container folder-icon">
                 {favicons.map((f,i) => <React.Fragment key={i}>{f}</React.Fragment>)}

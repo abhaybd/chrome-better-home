@@ -99,8 +99,6 @@ export function Folder(props) {
         Promise.all(promises).then(setFavicons);
     }, [props.content]);
 
-    // TODO: rework to enable adding to a folder
-
     let folderContent = null;
     if (props.isOpen === true) {
         folderContent = (

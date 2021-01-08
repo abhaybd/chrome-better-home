@@ -80,14 +80,13 @@ function App() {
             arr = sitesCopy[id[0]].content;
             i = id[1];
         }
-        console.log(id);
-        console.log(arr);
-        console.log(i);
         if (del === true) {
             arr.splice(i, 1);
         } else {
             arr[i].title = title;
-            arr[i].url = url;
+            if (!arr[i].content) { // if it's not a folder
+                arr[i].url = url;
+            }
         }
         setSites(sitesCopy);
     }

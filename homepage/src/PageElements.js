@@ -70,7 +70,7 @@ export function Site(props) {
     return (
         <a className={"site-container"} href={props.url} onMouseEnter={() => setShowSettings(true)}
            onMouseLeave={() => setShowSettings(false)}>
-            <div className={"options-button"} hidden={showSettings ? undefined : true} onClick={settingsClicked}>
+            <div className="options-button" hidden={showSettings ? undefined : true} onClick={settingsClicked}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                      className="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                     <path
@@ -88,6 +88,7 @@ export function Site(props) {
 }
 
 export function Folder(props) {
+    const [showSettings, setShowSettings] = useState(false);
     const [favicons, setFavicons] = useState([]);
 
     let len = props.content.length + 1; // add one to account for add icon
@@ -98,6 +99,12 @@ export function Folder(props) {
         let promises = props.content.slice(0, 4).map(site => urlToFavicon(site.url));
         Promise.all(promises).then(setFavicons);
     }, [props.content]);
+
+    function settingsClicked(e) {
+        e.stopPropagation();
+        console.log("Folder settings!");
+        props.showDialog(props.id);
+    }
 
     let folderContent = null;
     if (props.isOpen === true) {
@@ -113,8 +120,16 @@ export function Folder(props) {
     }
 
     return (
-        <div className="site-container" style={{cursor: "pointer"}} onClick={() => props.setOpen(props.id, true)}>
+        <div className="site-container" style={{cursor: "pointer"}} onClick={() => props.setOpen(props.id, true)}
+             onMouseEnter={() => setShowSettings(true)} onMouseLeave={() => setShowSettings(false)}>
             {folderContent}
+            <div className="options-button" hidden={showSettings ? undefined : true} onClick={settingsClicked}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     className="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                    <path
+                        d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                </svg>
+            </div>
             <div className="favicon-container folder-icon">
                 {favicons.map((f,i) => <React.Fragment key={i}>{f}</React.Fragment>)}
             </div>
@@ -158,10 +173,10 @@ export function ConfigDialog(props) {
                 Title:
                 <input type="text" value={title} onChange={e => setTitle(e.target.value)}/>
             </label>
-            <label>
+            {url ? <label>
                 URL:
                 <input type="text" value={url} onChange={e => setUrl(e.target.value)}/>
-            </label>
+            </label> : null}
             <table className="dialog-buttons">
                 <tbody>
                     <tr>

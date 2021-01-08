@@ -1,9 +1,11 @@
-import {useState, useEffect} from "react";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {getFaviconImg} from "./FaviconAPI";
 import "./PageElements.css";
 
 async function urlToFavicon(url) {
+    if (!url) {
+        return null;
+    }
     const regex = /^(?:http[s]?:\/\/)?(?:www.)?([\w.]+)/;
     let matches = url.match(regex);
     let host = matches ? matches[1] : null;
@@ -140,58 +142,3 @@ export function Folder(props) {
     );
 }
 
-export function ConfigDialog(props) {
-    const [title, setTitle] = useState(props.title ?? "");
-    const [url, setUrl] = useState(props.url ?? "");
-
-    function cancel() {
-        console.log("Closing dialog!");
-        props.close();
-    }
-
-    function del() {
-        props.callback(null, null, true);
-        props.close();
-    }
-
-    function save() {
-        console.log("Closing dialog and saving!");
-        props.callback(title, url);
-        props.close();
-    }
-
-    return (
-        <div className="config-dialog">
-            <div className="close-config" onClick={cancel}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x"
-                     viewBox="0 0 16 16">
-                    <path
-                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                </svg>
-            </div>
-            <label>
-                Title:
-                <input type="text" value={title} onChange={e => setTitle(e.target.value)}/>
-            </label>
-            {url ? <label>
-                URL:
-                <input type="text" value={url} onChange={e => setUrl(e.target.value)}/>
-            </label> : null}
-            <table className="dialog-buttons">
-                <tbody>
-                    <tr>
-                        <td>
-                            <button onClick={del} style={{color: "white", background: "red"}}>Delete</button>
-                        </td>
-                        <td>
-                            <button onClick={cancel}>Cancel</button>
-                        </td>
-                        <td>
-                            <button onClick={save} style={{color: "white", background: "green"}}>Save</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    );
-}

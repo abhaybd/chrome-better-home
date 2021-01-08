@@ -1,7 +1,8 @@
 import './App.css';
 import {useState} from 'react';
 import React from "react";
-import {ConfigDialog, SiteGroup} from "./PageElements";
+import {SiteGroup} from "./PageElements";
+import {AddDialog, ConfigDialog} from "./DialogElements";
 
 function App() {
     const [sites, setSites] = useState([
@@ -17,17 +18,18 @@ function App() {
             ]
         }]);
     const [currentlyEditing, setCurrentlyEditing] = useState(null); // id of site being edited, or null
+    const [currentlyAddingTo, setCurrentlyAddingTo] = useState(null); // id of group being added to, or null
 
-    function showDialog(id) {
+    function showConfigDialog(id) {
         if (!currentlyEditing) {
             console.log("Showing dialog!");
             setCurrentlyEditing(id);
         }
     }
 
-    function closeDialog() {
-        if (currentlyEditing !== null) {
-            setCurrentlyEditing(null);
+    function showAddDialog(id) {
+        if (!currentlyAddingTo) {
+            setCurrentlyAddingTo(id);
         }
     }
 
@@ -51,9 +53,7 @@ function App() {
 
     function setFolderOpen(id, open) {
         let copy = cloneData();
-        console.log(id);
-        console.log(copy);
-        copy[id[0]].isOpen = true;
+        copy[id[0]].isOpen = open;
         setSites(copy);
     }
 
@@ -91,12 +91,19 @@ function App() {
         setSites(sitesCopy);
     }
 
-    function add(id) {
+    function add(id, title, url) {
         let sitesCopy = cloneData();
-        if (id.length === 0) {
-            sitesCopy.push({title: "", url: ""});
+        let added = {title: title};
+        if (url !== undefined) {
+            added.url = url;
         } else {
-            sitesCopy[id[0]].content.push({title: "", url: ""});
+            added.isOpen = false;
+            added.content = [];
+        }
+        if (id.length === 0) {
+            sitesCopy.push(added);
+        } else {
+            sitesCopy[id[0]].content.push(added);
         }
 
         setSites(sitesCopy);
@@ -114,8 +121,15 @@ function App() {
     if (currentlyEditing !== null) {
         console.log(currentlyEditing);
         let {title, url} = getSite(currentlyEditing);
-        config = <ConfigDialog title={title} url={url} close={closeDialog}
+        config = <ConfigDialog title={title} url={url} close={() => setCurrentlyEditing(null)}
                                callback={(title, url, del) => updateSite(currentlyEditing, title, url, del)}/>
+    }
+
+    let addDialog = null;
+    if (currentlyAddingTo !== null) {
+        let id = currentlyAddingTo;
+        addDialog = <AddDialog close={() => setCurrentlyAddingTo(null)} canAddFolder={id.length === 0}
+                               callback={(title, url) => add(id, title, url)}/>;
     }
 
     return (
@@ -123,7 +137,8 @@ function App() {
             <header className="App-header" onClick={() => closeAllFolders()}>
                 <div onClick={e => e.stopPropagation()}>
                     {config}
-                    <SiteGroup id={[]} showDialog={showDialog} sites={sites} add={add} setOpen={setFolderOpen}/>
+                    {addDialog}
+                    <SiteGroup id={[]} showDialog={showConfigDialog} sites={sites} add={showAddDialog} setOpen={setFolderOpen}/>
                 </div>
             </header>
         </div>

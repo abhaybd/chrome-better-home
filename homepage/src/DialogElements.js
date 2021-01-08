@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import "./DialogElements.css";
 
 export function AddDialog(props) {
     const [type, setType] = useState("site");

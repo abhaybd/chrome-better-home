@@ -1,8 +1,14 @@
 import './App.css';
-import {useState} from 'react';
-import React from "react";
+import React, {useState, useEffect} from 'react';
 import {SiteGroup} from "./PageElements";
 import {AddDialog, ConfigDialog} from "./DialogElements";
+import {storageGet, storageSet} from "./Storage";
+
+const defaultSites = [
+    {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
+    {title: "Facebook", url: "https://www.facebook.com/"},
+    {title: "Twitter", url: "https://twitter.com/home"}
+];
 
 function App() {
     const [sites, setSites] = useState([
@@ -19,6 +25,20 @@ function App() {
         }]);
     const [currentlyEditing, setCurrentlyEditing] = useState(null); // id of site being edited, or null
     const [currentlyAddingTo, setCurrentlyAddingTo] = useState(null); // id of group being added to, or null
+
+    useEffect(function() {
+        let saved = storageGet("layout", undefined, true);
+        if (saved) {
+            setSites(saved);
+        } else {
+            setSites(defaultSites);
+            storageSet("layout", defaultSites, true);
+        }
+    }, []);
+
+    useEffect(function() {
+        storageSet("layout", sites, true);
+    }, [sites]);
 
     function showConfigDialog(id) {
         if (!currentlyEditing) {
@@ -138,7 +158,8 @@ function App() {
                 <div onClick={e => e.stopPropagation()}>
                     {config}
                     {addDialog}
-                    <SiteGroup id={[]} showDialog={showConfigDialog} sites={sites} add={showAddDialog} setOpen={setFolderOpen}/>
+                    <SiteGroup id={[]} showDialog={showConfigDialog} sites={sites} add={showAddDialog}
+                               setOpen={setFolderOpen}/>
                 </div>
             </header>
         </div>

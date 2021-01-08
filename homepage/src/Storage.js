@@ -5,10 +5,11 @@ export function storageGet(key, defaultVal, persistent=false) {
     } else {
         ret = sessionStorage.getItem(key);
     }
-    return ret ?? defaultVal;
+    return JSON.parse(ret) ?? defaultVal;
 }
 
 export function storageSet(key, val, persistent=false) {
+    val = JSON.stringify(val);
     if (persistent === true) {
         localStorage.setItem(key, val);
     } else {

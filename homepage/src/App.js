@@ -92,9 +92,14 @@ function App() {
         setSites(sitesCopy);
     }
 
-    function add() {
+    function add(id) {
         let sitesCopy = cloneData();
-        sitesCopy.push({title: "", url: ""});
+        if (id.length === 0) {
+            sitesCopy.push({title: "", url: ""});
+        } else {
+            sitesCopy[id[0]].content.push({title: "", url: ""});
+        }
+
         setSites(sitesCopy);
     }
 

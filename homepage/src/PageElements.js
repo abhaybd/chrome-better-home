@@ -5,7 +5,8 @@ import "./PageElements.css";
 
 async function urlToFavicon(url) {
     const regex = /^(?:http[s]?:\/\/)?(?:www.)?([\w.]+)/;
-    let host = url.match(regex)[1];
+    let matches = url.match(regex);
+    let host = matches ? matches[1] : null;
     if (host) {
         return await getFaviconImg(host);
     } else {
@@ -18,7 +19,7 @@ export function SiteGroup(props) {
         let id = [...props.id, i];
         if (data.content) { // data is folder
             return <Folder key={i} id={id} content={data.content} title={data.title} isOpen={data.isOpen}
-                           setOpen={props.setOpen} showDialog={props.showDialog}/>
+                           setOpen={props.setOpen} showDialog={props.showDialog} add={props.add}/>
         } else {
             return <Site key={i} id={id} showDialog={props.showDialog} url={data.url} title={data.title}/>
         }
@@ -27,7 +28,7 @@ export function SiteGroup(props) {
     return (
         <div className="site-group" style={{width: props.width ?? "50vw"}}>
             {props.sites.map((data, i) => createElem(data, i))}
-            <AddButton add={props.add} />
+            <AddButton add={() => props.add(props.id)} />
         </div>
     );
 }
@@ -109,7 +110,7 @@ export function Folder(props) {
         folderContent = (
             <div className="folder" onClick={e => e.stopPropagation()}>
                 <div style={{width: cols*100, height: rows*100}}>
-                    <SiteGroup id={props.id} width="100%" add={()=>false} sites={props.content} showDialog={props.showDialog}/>
+                    <SiteGroup id={props.id} width="100%" add={props.add} sites={props.content} showDialog={props.showDialog}/>
                 </div>
                 <hr style={{margin: "0"}}/>
                 {props.title}

@@ -3,12 +3,18 @@ import React, {useState, useEffect} from 'react';
 import {SettingsButton, SiteGroup} from "./PageElements";
 import {AddDialog, ConfigDialog, SettingsDialog} from "./DialogElements";
 import {storageGet, storageSet} from "./Storage";
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 
 const defaultSites = [
-    {title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
-    {title: "Facebook", url: "https://www.facebook.com/"},
-    {title: "Twitter", url: "https://twitter.com/home"}
+    {id: "0", title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
+    {id: "1", title: "Facebook", url: "https://www.facebook.com/"},
+    {id: "2", title: "Twitter", url: "https://twitter.com/home"}
 ];
+
+function getTimeStr() {
+    return String(performance.now ? performance.now() : Date.now());
+}
 
 function App() {
     const [sites, setSites] = useState([]);
@@ -53,7 +59,7 @@ function App() {
     function cloneData() {
         let copy = [];
         for (let data of sites) {
-            if (data.content) {
+            if (data.content !== undefined) {
                 let content = [];
                 for (let site of data.content) {
                     content.push(Object.assign({}, site));
@@ -70,7 +76,8 @@ function App() {
 
     function setFolderOpen(id, open) {
         let copy = cloneData();
-        copy[id[0]].isOpen = open;
+        let {index: idx} = getElementById(id);
+        copy[idx[0]].isOpen = open;
         setSites(copy);
     }
 
@@ -84,18 +91,18 @@ function App() {
         setSites(clone);
     }
 
-    function updateSite(id, title, url, del = false) {
+    function updateSite(idx, title, url, del = false) {
         if (url && !url.match(/^http[s]?:\/\//)) {
             url = "http://" + url;
         }
         let sitesCopy = cloneData();
         let arr, i;
-        if (id.length === 1) {
+        if (idx.length === 1) {
             arr = sitesCopy;
-            i = id[0];
+            i = idx[0];
         } else {
-            arr = sitesCopy[id[0]].content;
-            i = id[1];
+            arr = sitesCopy[idx[0]].content;
+            i = idx[1];
         }
         if (del === true) {
             arr.splice(i, 1);
@@ -110,48 +117,82 @@ function App() {
 
     function add(id, title, url) {
         let sitesCopy = cloneData();
-        let added = {title: title};
+        let added = {title: title, id: getTimeStr()};
         if (url !== undefined) {
-            added.url = url;
+            added.url = url; // TODO: prepend the protocol
         } else {
             added.isOpen = false;
             added.content = [];
         }
-        if (id.length === 0) {
+        if (id === -1) {
             sitesCopy.push(added);
         } else {
-            sitesCopy[id[0]].content.push(added);
+            let {index: idx} = getElementById(id);
+            sitesCopy[idx[0]].content.push(added);
         }
 
         setSites(sitesCopy);
     }
 
-    function getSite(id) {
-        if (id.length === 1) {
-            return sites[id[0]];
-        } else {
-            return sites[id[0]].content[id[1]];
+    function getElementById(id) {
+        for (let i = 0; i < sites.length; i++) {
+            let data = sites[i];
+            if (data.id === id) {
+                return {index: [i], elem: data};
+            } else if (data.content) {
+                for (let j = 0; j < data.content.length; j++) {
+                    let d = data.content[j];
+                    if (d.id === id) {
+                        return {index: [i,j], elem: d};
+                    }
+                }
+            }
         }
+        return {index: undefined, elem: undefined};
     }
 
     let config = null;
     if (currentlyEditing !== null) {
-        console.log(currentlyEditing);
-        let {title, url} = getSite(currentlyEditing);
+        let {index: idx, elem:{title, url}} = getElementById(currentlyEditing);
         config = <ConfigDialog title={title} url={url} close={() => setCurrentlyEditing(null)}
-                               callback={(title, url, del) => updateSite(currentlyEditing, title, url, del)}/>
+                               callback={(title, url, del) => updateSite(idx, title, url, del)}/>
     }
 
     let addDialog = null;
     if (currentlyAddingTo !== null) {
         let id = currentlyAddingTo;
-        addDialog = <AddDialog close={() => setCurrentlyAddingTo(null)} canAddFolder={id.length === 0}
+        addDialog = <AddDialog close={() => setCurrentlyAddingTo(null)} canAddFolder={id === -1}
                                callback={(title, url) => add(id, title, url)}/>;
     }
 
     let settingsDialog = null;
     if (showSettings) {
         settingsDialog = <SettingsDialog hideAdd={hideAdd} setHideAdd={setHideAdd} close={() => setShowSettings(false)}/>;
+    }
+
+    function move(id, toId) {
+        let {index: idx} = getElementById(id);
+        let {index: toIdx} = getElementById(toId);
+        let copy = cloneData();
+        let elem;
+        let fromArr;
+        if (idx.length === 1) {
+            elem = copy[idx[0]];
+            fromArr = copy;
+        } else {
+            fromArr = copy[idx[0]].content;
+            elem = fromArr[idx[1]];
+        }
+
+        let toArr;
+        if (toIdx.length === 1) {
+            toArr = copy;
+        } else {
+            toArr = copy[toIdx[0]].content;
+        }
+        fromArr.splice(idx[idx.length-1], 1);
+        toArr.splice(toIdx[toIdx.length-1], 0, elem);
+        setSites(copy);
     }
 
     return (
@@ -164,8 +205,10 @@ function App() {
                     {settingsDialog}
                     {config}
                     {addDialog}
-                    <SiteGroup id={[]} showDialog={showConfigDialog} sites={sites} add={showAddDialog}
-                               setOpen={setFolderOpen} hideAdd={hideAdd}/>
+                    <DndProvider backend={HTML5Backend}>
+                        <SiteGroup showDialog={showConfigDialog} sites={sites} add={showAddDialog} id={-1}
+                                   setOpen={setFolderOpen} hideAdd={hideAdd} move={move}/>
+                    </DndProvider>
                 </div>
             </header>
         </div>

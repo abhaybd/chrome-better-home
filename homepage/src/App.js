@@ -26,6 +26,7 @@ function App() {
     const [currentlyEditing, setCurrentlyEditing] = useState(null); // id of site being edited, or null
     const [currentlyAddingTo, setCurrentlyAddingTo] = useState(null); // id of group being added to, or null
     const [hideAdd, setHideAdd] = useState(false);
+    const [dialogsDisabled, setDialogsDisabled] = useState(false);
 
     useEffect(function() {
         let saved = storageGet("layout");
@@ -47,16 +48,26 @@ function App() {
         storageSet("hideAdd", hideAdd);
     }, [hideAdd]);
 
+    useEffect(function() {
+        setDialogsDisabled(!!currentlyEditing || !!currentlyAddingTo || !!showSettings);
+    }, [currentlyAddingTo, currentlyEditing, showSettings]);
+
     function showConfigDialog(id) {
-        if (!currentlyEditing) {
+        if (!dialogsDisabled) {
             console.log("Showing dialog!");
             setCurrentlyEditing(id);
         }
     }
 
     function showAddDialog(id) {
-        if (!currentlyAddingTo) {
+        if (!dialogsDisabled) {
             setCurrentlyAddingTo(id);
+        }
+    }
+
+    function showSettingsMenu() {
+        if (!dialogsDisabled) {
+            setShowSettings(true);
         }
     }
 
@@ -214,7 +225,7 @@ function App() {
         <div className="App">
             <header className="App-header" onClick={() => closeAllFolders()}>
                 <div onClick={e => e.stopPropagation()}>
-                    <SettingsButton openSettings={() => setShowSettings(true)}/>
+                    <SettingsButton openSettings={showSettingsMenu}/>
                 </div>
                 <div onClick={e => e.stopPropagation()}>
                     {settingsDialog}

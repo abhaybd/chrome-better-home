@@ -16,6 +16,10 @@ function getTimeStr() {
     return String(performance.now ? performance.now() : Date.now());
 }
 
+function ensureProtocol(url) {
+    return url && !url.match(/^http[s]?:\/\//) ? "http://" + url : url;
+}
+
 function App() {
     const [sites, setSites] = useState([]);
     const [showSettings, setShowSettings] = useState(false);
@@ -92,9 +96,7 @@ function App() {
     }
 
     function updateSite(idx, title, url, del = false) {
-        if (url && !url.match(/^http[s]?:\/\//)) {
-            url = "http://" + url;
-        }
+        url = ensureProtocol(url);
         let sitesCopy = cloneData();
         let arr, i;
         if (idx.length === 1) {
@@ -119,7 +121,7 @@ function App() {
         let sitesCopy = cloneData();
         let added = {title: title, id: getTimeStr()};
         if (url !== undefined) {
-            added.url = url; // TODO: prepend the protocol
+            added.url = ensureProtocol(url);
         } else {
             added.isOpen = false;
             added.content = [];

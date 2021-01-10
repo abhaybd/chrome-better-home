@@ -1,7 +1,7 @@
-import React, {useEffect, useState, useRef} from "react";
+import React, {useEffect, useState} from "react";
 import {getFaviconImg} from "./FaviconAPI";
 import "./PageElements.css";
-import {useDrag, useDrop, DropTargetMonitor} from "react-dnd";
+import {useDrag, useDrop} from "react-dnd";
 
 async function urlToFavicon(url) {
     if (!url) {

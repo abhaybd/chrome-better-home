@@ -62,14 +62,15 @@ export function ConfigDialog(props) {
 
     function save() {
         console.log("Closing dialog and saving!");
-        props.callback(title, url);
+        props.callback(title, props.url === undefined ? undefined : url);
         props.close();
     }
 
     return (
         <div className="dialog">
             <DialogClose close={cancel}/>
-            <ConfigBody title={title} setTitle={setTitle} url={url} setUrl={setUrl} del={del} cancel={cancel} save={save}/>
+            <ConfigBody title={title} setTitle={setTitle} url={url} setUrl={setUrl} del={del} cancel={cancel} save={save}
+                        hideUrl={props.url === undefined}/>
         </div>
     );
 }

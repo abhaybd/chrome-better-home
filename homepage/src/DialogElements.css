@@ -18,6 +18,12 @@
     z-index: 999;
 }
 
+.dialog form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .close-config {
     position: absolute;
     top: 0;

@@ -20,3 +20,10 @@ html {
 .App-link {
   color: #61dafb;
 }
+
+button {
+  cursor: pointer;
+  width: 100%;
+  border-radius: 5px;
+  border: thin outset black;
+}

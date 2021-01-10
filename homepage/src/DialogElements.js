@@ -3,13 +3,16 @@ import "./DialogElements.css";
 
 export function SettingsDialog(props) {
     return (
-        <div className="dialog settings-dialog">
-            <DialogClose close={props.close}/>
-            <h2>Settings</h2>
-            <label>
-                <input type="checkbox" checked={props.hideAdd} onChange={e => props.setHideAdd(e.target.checked)}/>
-                Hide add button
-            </label>
+        <div className="dialog-container">
+            <div className="dialog settings-dialog">
+                <DialogClose close={props.close}/>
+                <h2>Settings</h2>
+                <label>
+                    <input type="checkbox" checked={props.hideAdd} onChange={e => props.setHideAdd(e.target.checked)}/>
+                    Hide add button
+                </label>
+                <button onClick={props.clearStorage}>Clear all data</button>
+            </div>
         </div>
     );
 }
@@ -34,14 +37,16 @@ export function AddDialog(props) {
     }
 
     return (
-        <div className="dialog" style={{height: "150px"}}>
-            <DialogClose close={cancel}/>
-            <select value={type} onChange={e => setType(e.target.value)}>
-                <option value="site">Site</option>
-                {folderOption}
-            </select>
-            <ConfigBody title={title} setTitle={setTitle} url={url} setUrl={setUrl} cancel={cancel} save={save}
-                        hideDel={true} hideUrl={type !== "site"}/>
+        <div className="dialog-container">
+            <div className="dialog">
+                <DialogClose close={cancel}/>
+                <select value={type} onChange={e => setType(e.target.value)}>
+                    <option value="site">Site</option>
+                    {folderOption}
+                </select>
+                <ConfigBody title={title} setTitle={setTitle} url={url} setUrl={setUrl} cancel={cancel} save={save}
+                            hideDel={true} hideUrl={type !== "site"}/>
+            </div>
         </div>
     );
 }
@@ -67,11 +72,15 @@ export function ConfigDialog(props) {
     }
 
     return (
-        <div className="dialog">
-            <DialogClose close={cancel}/>
-            <ConfigBody title={title} setTitle={setTitle} url={url} setUrl={setUrl} del={del} cancel={cancel} save={save}
-                        hideUrl={props.url === undefined}/>
+        <div className="dialog-container">
+            <div className="dialog">
+                <DialogClose close={cancel}/>
+                <ConfigBody title={title} setTitle={setTitle} url={url} setUrl={setUrl} del={del} cancel={cancel}
+                            save={save}
+                            hideUrl={props.url === undefined}/>
+            </div>
         </div>
+
     );
 }
 

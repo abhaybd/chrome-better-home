@@ -2,7 +2,7 @@ import './App.css';
 import React, {useState, useEffect} from 'react';
 import {SettingsButton, SiteGroup} from "./PageElements";
 import {AddDialog, ConfigDialog, SettingsDialog} from "./DialogElements";
-import {storageGet, storageSet} from "./Storage";
+import {storageGet, storageSet, storageClear} from "./Storage";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 
@@ -28,19 +28,19 @@ function App() {
     const [hideAdd, setHideAdd] = useState(false);
 
     useEffect(function() {
-        let saved = storageGet("layout", undefined, true);
+        let saved = storageGet("layout");
         if (saved) {
             setSites(saved);
         } else {
             setSites(defaultSites);
-            storageSet("layout", defaultSites, true);
+            storageSet("layout", defaultSites);
         }
 
-        setHideAdd(storageGet("hideAdd", false, true));
+        setHideAdd(storageGet("hideAdd", false));
     }, []);
 
     useEffect(function() {
-        storageSet("layout", sites, true);
+        storageSet("layout", sites);
     }, [sites]);
 
     useEffect(function() {
@@ -153,6 +153,13 @@ function App() {
         return {index: undefined, elem: undefined};
     }
 
+    function clearStorage() {
+        if (window.confirm("Are you sure? This will reset all settings as well as your homepage.")) {
+            storageClear();
+            setSites(defaultSites);
+        }
+    }
+
     let config = null;
     if (currentlyEditing !== null) {
         let {index: idx, elem:{title, url}} = getElementById(currentlyEditing);
@@ -169,7 +176,8 @@ function App() {
 
     let settingsDialog = null;
     if (showSettings) {
-        settingsDialog = <SettingsDialog hideAdd={hideAdd} setHideAdd={setHideAdd} close={() => setShowSettings(false)}/>;
+        settingsDialog = <SettingsDialog hideAdd={hideAdd} setHideAdd={setHideAdd} close={() => setShowSettings(false)}
+                                         clearStorage={clearStorage}/>;
     }
 
     function move(id, toId, intoFolder = false) {

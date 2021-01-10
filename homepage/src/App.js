@@ -188,6 +188,7 @@ function App() {
         if (toIdx.length === 1) {
             if (intoFolder === true && copy[toIdx[0]].content !== undefined) {
                 toArr = copy[toIdx[0]].content;
+                toIdx[0] = toArr.length;
             } else {
                 toArr = copy;
             }

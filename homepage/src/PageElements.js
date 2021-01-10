@@ -136,17 +136,17 @@ function FolderContent({title, content, id, cols, rows, add, showDialog, move, h
         accept: "site",
         hover: function(item, monitor) {
             let draggedId = item.id;
-            let elemInFolder = content.filter(x => x.id === draggedId) !== 0;
-            if (draggedId !== id && monitor.isOver({shallow: true}) && !elemInFolder) {
+            let elemInFolder = content.filter(x => x.id === draggedId).length !== 0;
+            if (draggedId !== id && !elemInFolder) {
                 console.log(id);
                 console.log(draggedId);
                 move(draggedId, id, true);
             }
         }
-    })
+    });
 
     return (
-        <div ref={drop} className="folder" onClick={undefined}>
+        <div ref={drop} className="folder">
             <div style={{width: cols*100, height: rows*100}}>
                 <SiteGroup width="100%" add={add} sites={content} hideAdd={hideAdd}
                            showDialog={showDialog} move={move} id={id}/>

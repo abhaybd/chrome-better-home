@@ -101,13 +101,19 @@ function ConfigBody(props) {
     if (!props.hideDel) {
         delButton = (
             <td>
-                <button onClick={props.del} style={{color: "white", background: "red"}}>Delete</button>
+                <button type="button" onClick={props.del} style={{color: "white", background: "red"}}>Delete</button>
             </td>
         );
     }
 
+    function onSubmit(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        props.save();
+    }
+
     return (
-        <React.Fragment>
+        <form onSubmit={onSubmit}>
             <label>
                 Title:
                 <input type="text" value={props.title} onChange={e => props.setTitle(e.target.value)}/>
@@ -118,14 +124,14 @@ function ConfigBody(props) {
                     <tr>
                         {delButton}
                         <td>
-                            <button onClick={props.cancel}>Cancel</button>
+                            <button type="button" onClick={props.cancel}>Cancel</button>
                         </td>
                         <td>
-                            <button onClick={props.save} style={{color: "white", background: "green"}}>Save</button>
+                            <button type="submit" style={{color: "white", background: "green"}}>Save</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
-        </React.Fragment>
+        </form>
     );
 }

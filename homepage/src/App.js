@@ -170,7 +170,7 @@ function App() {
         settingsDialog = <SettingsDialog hideAdd={hideAdd} setHideAdd={setHideAdd} close={() => setShowSettings(false)}/>;
     }
 
-    function move(id, toId) {
+    function move(id, toId, intoFolder = false) {
         let {index: idx} = getElementById(id);
         let {index: toIdx} = getElementById(toId);
         let copy = cloneData();
@@ -186,7 +186,11 @@ function App() {
 
         let toArr;
         if (toIdx.length === 1) {
-            toArr = copy;
+            if (intoFolder === true && copy[toIdx[0]].content !== undefined) {
+                toArr = copy[toIdx[0]].content;
+            } else {
+                toArr = copy;
+            }
         } else {
             toArr = copy[toIdx[0]].content;
         }

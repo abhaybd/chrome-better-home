@@ -131,6 +131,32 @@ export function Site(props) {
     );
 }
 
+function FolderContent({title, content, id, cols, rows, add, showDialog, move, hideAdd}) {
+    const [, drop] = useDrop({
+        accept: "site",
+        hover: function(item, monitor) {
+            let draggedId = item.id;
+            let elemInFolder = content.filter(x => x.id === draggedId) !== 0;
+            if (draggedId !== id && monitor.isOver({shallow: true}) && !elemInFolder) {
+                console.log(id);
+                console.log(draggedId);
+                move(draggedId, id, true);
+            }
+        }
+    })
+
+    return (
+        <div ref={drop} className="folder" onClick={undefined}>
+            <div style={{width: cols*100, height: rows*100}}>
+                <SiteGroup width="100%" add={add} sites={content} hideAdd={hideAdd}
+                           showDialog={showDialog} move={move} id={id}/>
+            </div>
+            <hr style={{margin: "0"}}/>
+            {title}
+        </div>
+    );
+}
+
 export function Folder(props) {
     const [, drag] = useDrag({
         item: {type: "folder", id: props.id}
@@ -138,10 +164,10 @@ export function Folder(props) {
 
     const [,drop] = useDrop({
         accept: ["site", "folder"],
-        canDrop: () => false,
-        hover: function(item) {
+        canDrop: () => props.isOpen,
+        hover: function(item, monitor) {
             let draggedId = item.id;
-            if (draggedId !== props.id) {
+            if (draggedId !== props.id && monitor.isOver({shallow: true})) {
                 console.log(props.id);
                 console.log(draggedId);
                 props.move(draggedId, props.id);
@@ -169,16 +195,7 @@ export function Folder(props) {
 
     let folderContent = null;
     if (props.isOpen === true) {
-        folderContent = (
-            <div className="folder" onClick={e => e.stopPropagation()}>
-                <div style={{width: cols*100, height: rows*100}}>
-                    <SiteGroup width="100%" add={props.add} sites={props.content} hideAdd={props.hideAdd}
-                               showDialog={props.showDialog} move={props.move} id={props.id}/>
-                </div>
-                <hr style={{margin: "0"}}/>
-                {props.title}
-            </div>
-        );
+        folderContent = <FolderContent {...props} cols={cols} rows={rows}/>
     }
 
     return (

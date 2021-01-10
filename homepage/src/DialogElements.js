@@ -1,7 +1,33 @@
 import React, {useState} from "react";
 import "./DialogElements.css";
+import {storageGet} from "./Storage";
+import download from "downloadjs";
 
 export function SettingsDialog(props) {
+    function onFileChange(event) {
+        let file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            let text = String(e.target.result);
+            let data = JSON.parse(text);
+            if (data.layout) {
+                props.loadData(data);
+            } else {
+                alert("Invalid config file!");
+            }
+        }
+        reader.onerror = e => alert("Error: " + e);
+        reader.readAsText(file);
+    }
+
+    function downloadConfig() {
+        let data = {};
+        data.layout = storageGet("layout");
+        data.hideAdd = storageGet("hideAdd");
+        let dataStr = JSON.stringify(data);
+        download(dataStr, "config.json", "application/json");
+    }
+
     return (
         <div className="dialog-container">
             <div className="dialog settings-dialog">
@@ -12,6 +38,11 @@ export function SettingsDialog(props) {
                     Hide add button
                 </label>
                 <button onClick={props.clearStorage}>Clear all data</button>
+                <label>
+                    Upload config file
+                    <input type="file" accept="application/json" onChange={onFileChange}/>
+                </label>
+                <button onClick={downloadConfig}>Download config file</button>
             </div>
         </div>
     );

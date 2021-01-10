@@ -171,6 +171,11 @@ function App() {
         }
     }
 
+    function loadData({layout, hideAdd}) {
+        setSites(layout);
+        setHideAdd(hideAdd);
+    }
+
     let config = null;
     if (currentlyEditing !== null) {
         let {index: idx, elem:{title, url}} = getElementById(currentlyEditing);
@@ -188,7 +193,7 @@ function App() {
     let settingsDialog = null;
     if (showSettings) {
         settingsDialog = <SettingsDialog hideAdd={hideAdd} setHideAdd={setHideAdd} close={() => setShowSettings(false)}
-                                         clearStorage={clearStorage}/>;
+                                         clearStorage={clearStorage} loadData={loadData}/>;
     }
 
     function move(id, toId, intoFolder = false) {

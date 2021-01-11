@@ -23,15 +23,17 @@
     border-color: #586478;
     border-style: solid;
     border-radius: 20px;
-    padding: 25px 10px 10px;
     z-index: 999;
     box-sizing: border-box;
+    text-align: left;
+    padding: 15px 30px;
 }
 
 .dialog form {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: left;
 }
 
 .close-config {
@@ -47,11 +49,14 @@
 }
 
 .dialog input[type=text] {
-    margin-left: 5px;
+    border-radius: 7px;
+    border: 1px black inset;
+    height: 20px;
 }
 
 .dialog-buttons {
     width: 100%;
+    margin-top: 15px;
     table-layout: fixed;
     border-collapse: collapse;
 }
@@ -59,7 +64,6 @@
 div.settings-dialog {
     color: black;
     justify-content: flex-start;
-    /*padding-top: 0;*/
     text-align: left;
     padding: 15px 30px;
 }
@@ -86,10 +90,6 @@ h4 {
 .settings-dialog .btn {
     padding: 5px;
     border-radius: 20px;
-}
-
-.settings-dialog input {
-    margin-right: 10px;
 }
 
 .settings-dialog label {

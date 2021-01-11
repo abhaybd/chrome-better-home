@@ -134,10 +134,10 @@ function ConfigBody(props) {
     let urlInput = null;
     if (!props.hideUrl) {
         urlInput = (
-            <label>
-                URL:
+            <>
+                <h4>URL</h4>
                 <input type="text" value={props.url} onChange={e => props.setUrl(e.target.value)}/>
-            </label>
+            </>
         );
     }
 
@@ -158,18 +158,13 @@ function ConfigBody(props) {
 
     return (
         <form onSubmit={onSubmit}>
-            <label>
-                Title:
-                <input type="text" value={props.title} onChange={e => props.setTitle(e.target.value)}/>
-            </label>
+            <h4>Title:</h4>
+            <input type="text" value={props.title} onChange={e => props.setTitle(e.target.value)}/>
             {urlInput}
             <table className="dialog-buttons">
                 <tbody>
                     <tr>
                         {delButton}
-                        <td>
-                            <button type="button" onClick={props.cancel}>Cancel</button>
-                        </td>
                         <td>
                             <button type="submit" style={{color: "white", background: "green"}}>Save</button>
                         </td>

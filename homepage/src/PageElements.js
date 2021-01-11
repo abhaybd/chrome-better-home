@@ -167,12 +167,13 @@ function FolderContent({title, content, id, cols, rows, add, showDialog, move, h
 
 export function Folder(props) {
     const [, drag] = useDrag({
-        item: {type: "folder", id: props.id}
+        item: {type: "folder", id: props.id},
+        canDrag: () => !props.isOpen
     });
 
     const [,drop] = useDrop({
         accept: ["site", "folder"],
-        canDrop: () => props.isOpen,
+        canDrop: () => false,
         hover: function(item, monitor) {
             let draggedId = item.id;
             if (draggedId !== props.id && monitor.isOver({shallow: true})) {

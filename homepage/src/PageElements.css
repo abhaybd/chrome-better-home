@@ -75,6 +75,13 @@
     padding: 0;
 }
 
+.folder .folder-title {
+    width: 100%;
+    background: #586478;
+    margin-bottom: -1px;
+    border-radius: 0 0 10px 10px;
+}
+
 .settings-button-container {
     position: absolute;
     top: 0;

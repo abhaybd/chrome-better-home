@@ -148,7 +148,7 @@ function FolderContent({title, content, id, cols, rows, add, showDialog, move, h
     let titleElem = null;
     if (title) {
         titleElem = (
-            <div style={{width: "100%", background: "#586478", marginBottom: "-1px"}}>
+            <div className="folder-title">
                 {title}
             </div>
         )

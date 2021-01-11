@@ -74,6 +74,7 @@ export function AddDialog(props) {
         <div className="dialog-container">
             <div className="dialog">
                 <DialogClose close={cancel}/>
+                <h4>Type</h4>
                 <select value={type} onChange={e => setType(e.target.value)}>
                     <option value="site">Site</option>
                     {folderOption}
@@ -158,7 +159,7 @@ function ConfigBody(props) {
 
     return (
         <form onSubmit={onSubmit}>
-            <h4>Title:</h4>
+            <h4>Title</h4>
             <input type="text" value={props.title} onChange={e => props.setTitle(e.target.value)}/>
             {urlInput}
             <table className="dialog-buttons">

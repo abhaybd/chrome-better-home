@@ -7,6 +7,8 @@
     align-items: center;
     top: 0;
     left: 0;
+    z-index: 999;
+    backdrop-filter: blur(5px);
 }
 
 .dialog {
@@ -18,7 +20,9 @@
     flex-direction: column;
     font-size: 20px;
     justify-content: center;
-    border-radius: 10px;
+    border-color: #586478;
+    border-style: solid;
+    border-radius: 20px;
     padding: 25px 10px 10px;
     z-index: 999;
 }

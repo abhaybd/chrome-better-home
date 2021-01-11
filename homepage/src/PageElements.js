@@ -134,7 +134,7 @@ export function Site(props) {
 function FolderContent({title, content, id, cols, rows, add, showDialog, move, hideAdd}) {
     const [, drop] = useDrop({
         accept: "site",
-        hover: function(item, monitor) {
+        hover: function(item) {
             let draggedId = item.id;
             let elemInFolder = content.filter(x => x.id === draggedId).length !== 0;
             if (draggedId !== id && !elemInFolder) {

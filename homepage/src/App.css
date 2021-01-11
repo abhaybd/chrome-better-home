@@ -21,9 +21,13 @@ html {
   color: #61dafb;
 }
 
-button {
+button, .btn {
   cursor: pointer;
   width: 100%;
   border-radius: 5px;
   border: thin outset black;
+  font-size: 15px;
+  background: lightgray;
+  padding: 1px 0;
+  text-align: center;
 }

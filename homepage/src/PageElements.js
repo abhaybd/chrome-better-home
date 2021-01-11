@@ -149,7 +149,9 @@ function FolderContent({title, content, id, cols, rows, add, showDialog, move, h
     if (title) {
         titleElem = (
             <div className="folder-title">
-                {title}
+                <p>
+                    {title}
+                </p>
             </div>
         )
     }

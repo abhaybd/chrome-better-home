@@ -25,6 +25,7 @@
     border-radius: 20px;
     padding: 25px 10px 10px;
     z-index: 999;
+    box-sizing: border-box;
 }
 
 .dialog form {
@@ -58,17 +59,39 @@
 div.settings-dialog {
     color: black;
     justify-content: flex-start;
-    padding-top: 0;
+    /*padding-top: 0;*/
+    text-align: left;
+    padding: 15px 30px;
 }
 
 .settings-dialog label {
     margin: 5px 0
 }
 
-.settings-dialog h2 {
-    margin: 0;
+h2, h3, h4 {
+    margin: 5px 0 0;
+    text-transform: uppercase;
+}
+
+h2 {
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+
+h4 {
+    font-size: 15px;
+    margin-bottom: 3px;
+}
+
+.settings-dialog .btn {
+    padding: 5px;
+    border-radius: 20px;
 }
 
 .settings-dialog input {
     margin-right: 10px;
+}
+
+.settings-dialog label {
+    font-size: 15px;
 }

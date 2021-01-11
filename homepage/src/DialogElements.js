@@ -33,16 +33,19 @@ export function SettingsDialog(props) {
             <div className="dialog settings-dialog">
                 <DialogClose close={props.close}/>
                 <h2>Settings</h2>
+                <h4>Configuration</h4>
+                <label>
+                    <div className="btn">Upload config file</div>
+                    <input type="file" accept="application/json" onChange={onFileChange} hidden/>
+                </label>
+                <div className="btn" onClick={downloadConfig}>Download config file</div>
+                <h4>Display</h4>
                 <label>
                     <input type="checkbox" checked={props.hideAdd} onChange={e => props.setHideAdd(e.target.checked)}/>
-                    Hide add button
+                    Hide 'add' button
                 </label>
-                <button onClick={props.clearStorage}>Clear all data</button>
-                <label>
-                    Upload config file
-                    <input type="file" accept="application/json" onChange={onFileChange}/>
-                </label>
-                <button onClick={downloadConfig}>Download config file</button>
+                <h4>Data</h4>
+                <div className="btn" onClick={props.clearStorage} style={{background: "#EF6666"}}>Clear all data</div>
             </div>
         </div>
     );

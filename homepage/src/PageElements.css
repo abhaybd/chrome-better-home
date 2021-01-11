@@ -80,6 +80,13 @@
     background: #586478;
     margin-bottom: -1px;
     border-radius: 0 0 10px 10px;
+    vertical-align: center;
+}
+
+.folder-title p {
+    margin: 0;
+    position: relative;
+    top: 3px
 }
 
 .settings-button-container {

@@ -64,11 +64,15 @@
 
 .folder {
     cursor: auto;
-    background-color: rgba(25, 40, 65, 0.9);
+    background-color: #23272E;
     transform: translateY(-25%);
+    border-width: 5px;
+    border-color: #586478;
+    border-style: solid;
     border-radius: 20px;
     z-index: 100;
     font-size: 20px;
+    padding: 0;
 }
 
 .settings-button-container {

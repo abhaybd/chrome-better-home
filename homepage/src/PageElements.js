@@ -148,16 +148,15 @@ function FolderContent({title, content, id, cols, rows, add, showDialog, move, h
     let titleElem = null;
     if (title) {
         titleElem = (
-            <React.Fragment>
-                <hr style={{margin: "0"}}/>
+            <div style={{width: "100%", background: "#586478", marginBottom: "-1px"}}>
                 {title}
-            </React.Fragment>
+            </div>
         )
     }
 
     return (
         <div ref={drop} className="folder">
-            <div style={{width: cols*100, height: rows*100}}>
+            <div style={{width: cols*100, height: rows*100, background: "#23272E", margin: "10px"}}>
                 <SiteGroup width="100%" add={add} sites={content} hideAdd={hideAdd}
                            showDialog={showDialog} move={move} id={id}/>
             </div>

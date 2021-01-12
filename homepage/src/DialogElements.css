@@ -1,97 +1,97 @@
 .dialog-container {
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: 0;
-    left: 0;
-    z-index: 999;
-    backdrop-filter: blur(5px);
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  backdrop-filter: blur(5px);
 }
 
 .dialog {
-    background-color: white;
-    color: black;
-    width: 300px;
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    font-size: 20px;
-    justify-content: center;
-    border-color: #586478;
-    border-style: solid;
-    border-radius: 20px;
-    z-index: 999;
-    box-sizing: border-box;
-    text-align: left;
-    padding: 15px 30px;
+  background-color: white;
+  color: black;
+  width: 300px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  justify-content: center;
+  border-color: #586478;
+  border-style: solid;
+  border-radius: 20px;
+  z-index: 999;
+  box-sizing: border-box;
+  text-align: left;
+  padding: 15px 30px;
 }
 
 .dialog form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
 }
 
 .close-config {
-    position: absolute;
-    top: 0;
-    right: 0;
-    cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
 }
 
 .close-config svg {
-    width: 24px;
-    height: 24px;
+  width: 24px;
+  height: 24px;
 }
 
 .dialog input[type=text] {
-    border-radius: 7px;
-    border: 1px black inset;
-    height: 20px;
+  border-radius: 7px;
+  border: 1px black inset;
+  height: 20px;
 }
 
 .dialog-buttons {
-    width: 100%;
-    margin-top: 15px;
-    table-layout: fixed;
-    border-collapse: collapse;
+  width: 100%;
+  margin-top: 15px;
+  table-layout: fixed;
+  border-collapse: collapse;
 }
 
 div.settings-dialog {
-    color: black;
-    justify-content: flex-start;
-    text-align: left;
-    padding: 15px 30px;
+  color: black;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 15px 30px;
 }
 
 .settings-dialog label {
-    margin: 5px 0
+  margin: 5px 0
 }
 
 h2, h3, h4 {
-    margin: 5px 0 0;
-    text-transform: uppercase;
+  margin: 5px 0 0;
+  text-transform: uppercase;
 }
 
 h2 {
-    font-size: 25px;
-    margin-bottom: 5px;
+  font-size: 25px;
+  margin-bottom: 5px;
 }
 
 h4 {
-    font-size: 15px;
-    margin-bottom: 3px;
+  font-size: 15px;
+  margin-bottom: 3px;
 }
 
 .settings-dialog .btn {
-    padding: 5px;
-    border-radius: 20px;
+  padding: 5px;
+  border-radius: 20px;
 }
 
 .settings-dialog label {
-    font-size: 15px;
+  font-size: 15px;
 }

@@ -1,108 +1,108 @@
 .site-container {
-    width: 80px;
-    height: 80px;
-    border-radius: 15px;
-    background-color: rgba(255, 255, 255, 0.2);
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    text-decoration: none;
-    color: white;
-    align-items: center;
-    margin: 10px
+  width: 80px;
+  height: 80px;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-decoration: none;
+  color: white;
+  align-items: center;
+  margin: 10px
 }
 
 .site-title {
-    font-size: 13px;
-    white-space: nowrap;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    padding: 0 5px;
-    position: absolute;
-    bottom: 2px;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  padding: 0 5px;
+  position: absolute;
+  bottom: 2px;
 }
 
 .favicon-container {
-    width: 45px;
-    height: 45px;
-    top: -10px;
-    bottom: 0;
-    margin: auto;
-    position: absolute;
-    background-color: white;
-    border-radius: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 45px;
+  height: 45px;
+  top: -10px;
+  bottom: 0;
+  margin: auto;
+  position: absolute;
+  background-color: white;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .favicon-container img {
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 .options-button {
-    position: absolute;
-    top: -5px;
-    right: 0;
+  position: absolute;
+  top: -5px;
+  right: 0;
 }
 
 .site-group {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .folder-icon {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 .folder {
-    cursor: auto;
-    background-color: #23272E;
-    transform: translateY(-25%);
-    border-width: 5px;
-    border-color: #586478;
-    border-style: solid;
-    border-radius: 20px;
-    z-index: 100;
-    font-size: 20px;
-    padding: 0;
+  cursor: auto;
+  background-color: #23272E;
+  transform: translateY(-25%);
+  border-width: 5px;
+  border-color: #586478;
+  border-style: solid;
+  border-radius: 20px;
+  z-index: 100;
+  font-size: 20px;
+  padding: 0;
 }
 
 .folder .folder-title {
-    width: 100%;
-    background: #586478;
-    margin-bottom: -1px;
-    border-radius: 0 0 10px 10px;
-    vertical-align: center;
+  width: 100%;
+  background: #586478;
+  margin-bottom: -1px;
+  border-radius: 0 0 10px 10px;
+  vertical-align: center;
 }
 
 .folder-title p {
-    margin: 0;
-    position: relative;
-    top: 3px
+  margin: 0;
+  position: relative;
+  top: 3px
 }
 
 .settings-button-container {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: transparent;
-    width: 50px;
-    height: 50px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: transparent;
+  width: 50px;
+  height: 50px;
 }
 
 .settings-button {
-    cursor: pointer;
-    color: rgba(255, 255, 255, 0.5);
-    width: 25px;
-    height: 25px;
-    float: right;
-    margin: 10px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.5);
+  width: 25px;
+  height: 25px;
+  float: right;
+  margin: 10px;
 }

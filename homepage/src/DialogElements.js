@@ -7,7 +7,7 @@ export function SettingsDialog(props) {
     function onConfigFileChange(event) {
         let file = event.target.files[0];
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             let text = String(e.target.result);
             let data = JSON.parse(text);
             if (data.layout) {
@@ -32,7 +32,7 @@ export function SettingsDialog(props) {
     function onBackgroundFileChange(event) {
         let file = event.target.files[0];
         const reader = new FileReader();
-        reader.onload = function() {
+        reader.onload = function () {
             let dataUrl = reader.result;
             props.setBackground(dataUrl);
         }
@@ -57,7 +57,8 @@ export function SettingsDialog(props) {
                     Hide 'add' button
                 </label>
                 <label>
-                    <input type="checkbox" checked={props.hideClock} onChange={e => props.setHideClock(e.target.checked)}/>
+                    <input type="checkbox" checked={props.hideClock}
+                           onChange={e => props.setHideClock(e.target.checked)}/>
                     Hide clock
                 </label>
                 <label>

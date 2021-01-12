@@ -195,27 +195,6 @@ function App() {
         setHideAdd(hideAdd);
     }
 
-    let config = null;
-    if (currentlyEditing !== null) {
-        let {index: idx, elem: {title, url}} = getElementById(currentlyEditing);
-        config = <ConfigDialog title={title} url={url} close={() => setCurrentlyEditing(null)}
-                               callback={(title, url, del) => updateSite(idx, title, url, del)}/>
-    }
-
-    let addDialog = null;
-    if (currentlyAddingTo !== null) {
-        let id = currentlyAddingTo;
-        addDialog = <AddDialog close={() => setCurrentlyAddingTo(null)} canAddFolder={id === -1}
-                               callback={(title, url) => add(id, title, url)}/>;
-    }
-
-    let settingsDialog = null;
-    if (showSettings) {
-        settingsDialog = <SettingsDialog hideAdd={hideAdd} setHideAdd={setHideAdd} close={() => setShowSettings(false)}
-                                         clearStorage={clearStorage} loadData={loadData} setBackground={setBackground}
-                                         hideClock={hideClock} setHideClock={setHideClock}/>;
-    }
-
     function move(id, toId, intoFolder = false) {
         let {index: idx} = getElementById(id);
         let {index: toIdx} = getElementById(toId);
@@ -244,6 +223,27 @@ function App() {
         fromArr.splice(idx[idx.length - 1], 1);
         toArr.splice(toIdx[toIdx.length - 1], 0, elem);
         setSites(copy);
+    }
+
+    let config = null;
+    if (currentlyEditing !== null) {
+        let {index: idx, elem: {title, url}} = getElementById(currentlyEditing);
+        config = <ConfigDialog title={title} url={url} close={() => setCurrentlyEditing(null)}
+                               callback={(title, url, del) => updateSite(idx, title, url, del)}/>
+    }
+
+    let addDialog = null;
+    if (currentlyAddingTo !== null) {
+        let id = currentlyAddingTo;
+        addDialog = <AddDialog close={() => setCurrentlyAddingTo(null)} canAddFolder={id === -1}
+                               callback={(title, url) => add(id, title, url)}/>;
+    }
+
+    let settingsDialog = null;
+    if (showSettings) {
+        settingsDialog = <SettingsDialog hideAdd={hideAdd} setHideAdd={setHideAdd} close={() => setShowSettings(false)}
+                                         clearStorage={clearStorage} loadData={loadData} setBackground={setBackground}
+                                         hideClock={hideClock} setHideClock={setHideClock}/>;
     }
 
     return (

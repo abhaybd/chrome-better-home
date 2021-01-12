@@ -21,7 +21,7 @@ export function SettingsButton(props) {
     const [show, setShow] = useState(false);
 
     let button = null;
-    if(show) {
+    if (show) {
         button = (
             <div className="settings-button" onClick={() => props.openSettings()}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -34,7 +34,8 @@ export function SettingsButton(props) {
     }
 
     return (
-        <div className="settings-button-container" onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
+        <div className="settings-button-container" onMouseEnter={() => setShow(true)}
+             onMouseLeave={() => setShow(false)}>
             {button}
         </div>
     );
@@ -44,10 +45,13 @@ export function SiteGroup(props) {
     function createElem(data, i) {
         let id = data.id;
         if (data.content) { // data is folder
-            return <Folder key={i} id={id} content={data.content} title={data.title} isOpen={data.isOpen} move={props.move}
-                           setOpen={props.setOpen} showDialog={props.showDialog} add={props.add} hideAdd={props.hideAdd}/>
+            return <Folder key={i} id={id} content={data.content} title={data.title} isOpen={data.isOpen}
+                           move={props.move}
+                           setOpen={props.setOpen} showDialog={props.showDialog} add={props.add}
+                           hideAdd={props.hideAdd}/>
         } else {
-            return <Site canAcceptFolder={props.id === -1} key={i} move={props.move} id={id} showDialog={props.showDialog}
+            return <Site canAcceptFolder={props.id === -1} key={i} move={props.move} id={id}
+                         showDialog={props.showDialog}
                          url={data.url} title={data.title}/>
         }
     }
@@ -55,7 +59,7 @@ export function SiteGroup(props) {
     return (
         <div className="site-group" style={{width: props.width ?? "50vw"}}>
             {props.sites.map((data, i) => createElem(data, i))}
-            {props.hideAdd ? null : <AddButton add={() => props.add(props.id)} />}
+            {props.hideAdd ? null : <AddButton add={() => props.add(props.id)}/>}
         </div>
     );
 }
@@ -82,10 +86,10 @@ export function Site(props) {
         item: {type: "site", id: props.id}
     });
 
-    const [,drop] = useDrop({
+    const [, drop] = useDrop({
         accept: props.canAcceptFolder ? ["site", "folder"] : "site",
         canDrop: () => false,
-        hover: function(item) {
+        hover: function (item) {
             let draggedId = item.id;
             if (draggedId !== props.id) {
                 console.log(props.id);
@@ -112,7 +116,8 @@ export function Site(props) {
     }
 
     return (
-        <a ref={node => drag(drop(node))} className={"site-container"} href={props.url} onMouseEnter={() => setShowSettings(true)}
+        <a ref={node => drag(drop(node))} className={"site-container"} href={props.url}
+           onMouseEnter={() => setShowSettings(true)}
            onMouseLeave={() => setShowSettings(false)}>
             <div className="options-button" hidden={showSettings ? undefined : true} onClick={settingsClicked}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -134,7 +139,7 @@ export function Site(props) {
 function FolderContent({title, content, id, cols, rows, add, showDialog, move, hideAdd}) {
     const [, drop] = useDrop({
         accept: "site",
-        hover: function(item) {
+        hover: function (item) {
             let draggedId = item.id;
             let elemInFolder = content.filter(x => x.id === draggedId).length !== 0;
             if (draggedId !== id && !elemInFolder) {
@@ -158,7 +163,7 @@ function FolderContent({title, content, id, cols, rows, add, showDialog, move, h
 
     return (
         <div ref={drop} className="folder">
-            <div style={{width: cols*100, height: rows*100, background: "#23272E", margin: "10px"}}>
+            <div style={{width: cols * 100, height: rows * 100, background: "#23272E", margin: "10px"}}>
                 <SiteGroup width="100%" add={add} sites={content} hideAdd={hideAdd}
                            showDialog={showDialog} move={move} id={id}/>
             </div>
@@ -173,10 +178,10 @@ export function Folder(props) {
         canDrag: () => !props.isOpen
     });
 
-    const [,drop] = useDrop({
+    const [, drop] = useDrop({
         accept: ["site", "folder"],
         canDrop: () => false,
-        hover: function(item, monitor) {
+        hover: function (item, monitor) {
             let draggedId = item.id;
             if (draggedId !== props.id && monitor.isOver({shallow: true})) {
                 console.log(props.id);
@@ -193,7 +198,7 @@ export function Folder(props) {
     let cols = Math.max(2, Math.ceil(Math.sqrt(len)));
     let rows = Math.max(1, Math.ceil(len / cols));
 
-    useEffect(function() {
+    useEffect(function () {
         let promises = props.content.slice(0, 4).map(site => urlToFavicon(site.url));
         Promise.all(promises).then(setFavicons);
     }, [props.content]);
@@ -222,7 +227,7 @@ export function Folder(props) {
                 </svg>
             </div>
             <div className="favicon-container folder-icon">
-                {favicons.map((f,i) => <React.Fragment key={i}>{f}</React.Fragment>)}
+                {favicons.map((f, i) => <React.Fragment key={i}>{f}</React.Fragment>)}
             </div>
             <div className="site-title">
                 {props.title}

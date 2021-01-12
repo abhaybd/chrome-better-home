@@ -1,4 +1,4 @@
-export function storageGet(key, defaultVal, persistent=true) {
+export function storageGet(key, defaultVal, persistent = true) {
     let ret;
     if (persistent === true) {
         ret = localStorage.getItem(key);
@@ -8,7 +8,7 @@ export function storageGet(key, defaultVal, persistent=true) {
     return ret ? JSON.parse(ret) : defaultVal;
 }
 
-export function storageSet(key, val, persistent=true) {
+export function storageSet(key, val, persistent = true) {
     val = JSON.stringify(val);
     if (persistent === true) {
         localStorage.setItem(key, val);

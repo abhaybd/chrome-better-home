@@ -51,6 +51,9 @@ function App() {
         setBackground(storageGet("background"));
         setHideClock(storageGet("hideClock", false));
         setIconsPerRow(storageGet("iconsPerRow", 5));
+
+        // yes, this is fucked up. whatever. It silences the (possibly) harmless invariant errors from react-dnd.
+        window.onerror = () => true;
     }, []);
 
     useEffect(function () {

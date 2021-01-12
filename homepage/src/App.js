@@ -53,7 +53,7 @@ function App() {
         setIconsPerRow(storageGet("iconsPerRow", 5));
 
         // yes, this is fucked up. whatever. It silences the (possibly) harmless invariant errors from react-dnd.
-        window.onerror = () => true;
+        window.onerror = e => e === "Uncaught Invariant Violation: Expected to find a valid target.";
     }, []);
 
     useEffect(function () {

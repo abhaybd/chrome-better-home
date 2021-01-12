@@ -1,6 +1,6 @@
 export function storageGet(key, defaultVal, persistent = true) {
+    let ret = null;
     try {
-        let ret;
         if (persistent === true) {
             ret = localStorage.getItem(key);
         } else {
@@ -8,18 +8,20 @@ export function storageGet(key, defaultVal, persistent = true) {
         }
         return ret ? JSON.parse(ret) : defaultVal;
     } catch (e) {
-        console.log("Encountered error while getting value for key: " + key);
+        console.log(`Error while getting value for key: ${key}. Value: ${ret}`);
         console.error(e);
         return defaultVal;
     }
 }
 
 export function storageSet(key, val, persistent = true) {
-    val = JSON.stringify(val);
-    if (persistent === true) {
-        localStorage.setItem(key, val);
-    } else {
-        sessionStorage.setItem(key, val);
+    if (val) {
+        val = JSON.stringify(val);
+        if (persistent === true) {
+            localStorage.setItem(key, val);
+        } else {
+            sessionStorage.setItem(key, val);
+        }
     }
 }
 

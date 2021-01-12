@@ -103,7 +103,6 @@ export function Site(props) {
     const [showSettings, setShowSettings] = useState(false);
 
     useEffect(() => {
-        // console.log("Url changed! new: " + props.url);
         if (props.url) {
             urlToFavicon(props.url).then(img => setFavicon(img));
         }
@@ -111,7 +110,6 @@ export function Site(props) {
 
     function settingsClicked(e) {
         e.preventDefault();
-        console.log("Clicked!");
         props.showDialog(props.id);
     }
 
@@ -205,7 +203,6 @@ export function Folder(props) {
 
     function settingsClicked(e) {
         e.stopPropagation();
-        console.log("Folder settings!");
         props.showDialog(props.id);
     }
 

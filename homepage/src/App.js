@@ -73,7 +73,6 @@ function App() {
 
     function showConfigDialog(id) {
         if (!dialogsDisabled) {
-            console.log("Showing dialog!");
             setCurrentlyEditing(id);
         }
     }

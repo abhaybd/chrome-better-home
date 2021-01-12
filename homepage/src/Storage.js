@@ -1,11 +1,17 @@
 export function storageGet(key, defaultVal, persistent = true) {
-    let ret;
-    if (persistent === true) {
-        ret = localStorage.getItem(key);
-    } else {
-        ret = sessionStorage.getItem(key);
+    try {
+        let ret;
+        if (persistent === true) {
+            ret = localStorage.getItem(key);
+        } else {
+            ret = sessionStorage.getItem(key);
+        }
+        return ret ? JSON.parse(ret) : defaultVal;
+    } catch (e) {
+        console.log("Encountered error while getting value for key: " + key);
+        console.error(e);
+        return defaultVal;
     }
-    return ret ? JSON.parse(ret) : defaultVal;
 }
 
 export function storageSet(key, val, persistent = true) {

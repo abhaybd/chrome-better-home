@@ -24,10 +24,11 @@ html {
 button, .btn {
   cursor: pointer;
   width: 100%;
-  border-radius: 5px;
-  border: thin outset black;
+  border: none;
+  border-radius: 15px;
   font-size: 15px;
   background: lightgray;
   padding: 1px 0;
   text-align: center;
+  box-sizing: border-box;
 }

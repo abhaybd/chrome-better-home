@@ -5,6 +5,7 @@ import {AddDialog, ConfigDialog, SettingsDialog} from "./DialogElements";
 import {storageGet, storageSet, storageClear} from "./Storage";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
+import DefaultBackground from "./space.jpg";
 
 const defaultSites = [
     {id: "0", title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
@@ -27,6 +28,7 @@ function App() {
     const [currentlyAddingTo, setCurrentlyAddingTo] = useState(null); // id of group being added to, or null
     const [hideAdd, setHideAdd] = useState(false);
     const [dialogsDisabled, setDialogsDisabled] = useState(false);
+    const [background, setBackground] = useState(null);
 
     useEffect(function() {
         let saved = storageGet("layout");
@@ -37,7 +39,13 @@ function App() {
             storageSet("layout", defaultSites);
         }
 
+        let background = storageGet("background");
+        if (background) {
+            setBackground(background);
+        }
+
         setHideAdd(storageGet("hideAdd", false));
+        setBackground(storageGet("background"));
     }, []);
 
     useEffect(function() {
@@ -51,6 +59,10 @@ function App() {
     useEffect(function() {
         setDialogsDisabled(!!currentlyEditing || !!currentlyAddingTo || !!showSettings);
     }, [currentlyAddingTo, currentlyEditing, showSettings]);
+
+    useEffect(function() {
+        storageSet("background", background);
+    }, [background]);
 
     function showConfigDialog(id) {
         if (!dialogsDisabled) {
@@ -193,7 +205,7 @@ function App() {
     let settingsDialog = null;
     if (showSettings) {
         settingsDialog = <SettingsDialog hideAdd={hideAdd} setHideAdd={setHideAdd} close={() => setShowSettings(false)}
-                                         clearStorage={clearStorage} loadData={loadData}/>;
+                                         clearStorage={clearStorage} loadData={loadData} setBackground={setBackground}/>;
     }
 
     function move(id, toId, intoFolder = false) {
@@ -227,7 +239,7 @@ function App() {
     }
 
     return (
-        <div className="App">
+        <div className="App" style={{background: `url(${background ?? DefaultBackground}) center`}}>
             <header className="App-header" onClick={() => closeAllFolders()}>
                 <div onClick={e => e.stopPropagation()}>
                     <SettingsButton openSettings={showSettingsMenu}/>

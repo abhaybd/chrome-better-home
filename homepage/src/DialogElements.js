@@ -4,7 +4,7 @@ import {storageGet} from "./Storage";
 import download from "downloadjs";
 
 export function SettingsDialog(props) {
-    function onFileChange(event) {
+    function onConfigFileChange(event) {
         let file = event.target.files[0];
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -24,8 +24,20 @@ export function SettingsDialog(props) {
         let data = {};
         data.layout = storageGet("layout");
         data.hideAdd = storageGet("hideAdd");
+        data.background = storageGet("background");
         let dataStr = JSON.stringify(data);
         download(dataStr, "config.json", "application/json");
+    }
+
+    function onBackgroundFileChange(event) {
+        let file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function() {
+            let dataUrl = reader.result;
+            props.setBackground(dataUrl);
+        }
+        reader.onerror = e => alert("Error: " + e);
+        reader.readAsDataURL(file);
     }
 
     return (
@@ -36,7 +48,7 @@ export function SettingsDialog(props) {
                 <h4>Configuration</h4>
                 <label>
                     <div className="btn">Upload config file</div>
-                    <input type="file" accept="application/json" onChange={onFileChange} hidden/>
+                    <input type="file" accept="application/json" onChange={onConfigFileChange} hidden/>
                 </label>
                 <div className="btn" onClick={downloadConfig}>Download config file</div>
                 <h4>Display</h4>
@@ -44,6 +56,11 @@ export function SettingsDialog(props) {
                     <input type="checkbox" checked={props.hideAdd} onChange={e => props.setHideAdd(e.target.checked)}/>
                     Hide 'add' button
                 </label>
+                <label>
+                    <div className="btn">Upload background image</div>
+                    <input type="file" accept="image/*" onChange={onBackgroundFileChange} hidden/>
+                </label>
+                <div className="btn" onClick={() => props.setBackground(null)}>Reset background image</div>
                 <h4>Data</h4>
                 <div className="btn" onClick={props.clearStorage} style={{background: "#EF6666"}}>Clear all data</div>
             </div>

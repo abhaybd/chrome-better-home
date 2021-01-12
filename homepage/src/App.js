@@ -1,6 +1,6 @@
 import './App.css';
 import React, {useState, useEffect} from 'react';
-import {SettingsButton, SiteGroup} from "./PageElements";
+import {RootDropTarget, SettingsButton, SiteGroup} from "./PageElements";
 import {AddDialog, ConfigDialog, SettingsDialog} from "./DialogElements";
 import {storageGet, storageSet, storageClear} from "./Storage";
 import {DndProvider} from "react-dnd";
@@ -203,9 +203,17 @@ function App() {
         setIconsPerRow(iconsPerRow);
     }
 
-    function move(id, toId, intoFolder = false) {
+    // to is either an index (array of indices) or an id
+    function move(id, to, intoFolder = false) {
         let {index: idx} = getElementById(id);
-        let {index: toIdx} = getElementById(toId);
+        let toIdx;
+        // this is a hack to avoid creating a new method
+        if (to instanceof Array) {
+            toIdx = to;
+        } else {
+            let {index: i} = getElementById(to);
+            toIdx = i;
+        }
         let copy = cloneData();
         let elem;
         let fromArr;
@@ -267,9 +275,13 @@ function App() {
                     {addDialog}
                     {hideClock ? null : <Clock/>}
                     <DndProvider backend={HTML5Backend}>
-                        <SiteGroup showDialog={showConfigDialog} sites={sites} add={showAddDialog} id={-1}
-                                   setOpen={setFolderOpen} hideAdd={hideAdd} move={move}
-                                   width={`${iconsPerRow * 100}px`}/>
+                        <div style={{width: "100%", position:"relative"}}>
+                            <RootDropTarget left={true} move={move} sites={sites} />
+                            <RootDropTarget left={false} move={move} sites={sites} />
+                            <SiteGroup showDialog={showConfigDialog} sites={sites} add={showAddDialog} id={-1}
+                                       setOpen={setFolderOpen} hideAdd={hideAdd} move={move}
+                                       width={`${iconsPerRow * 100}px`}/>
+                        </div>
                     </DndProvider>
                 </div>
             </header>

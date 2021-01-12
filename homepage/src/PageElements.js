@@ -81,6 +81,24 @@ export function AddButton(props) {
     );
 }
 
+export function RootDropTarget({sites, left, move}) {
+    const [, drop] = useDrop({
+        accept: "site",
+        canDrop: () => false,
+        hover: function(item) {
+            let draggedId = item.id;
+            let alreadyInRoot = sites.filter(x => x.id === draggedId).length > 0;
+            if (!alreadyInRoot) {
+                move(draggedId, left ? [0] : [sites.length]);
+            }
+        }
+    });
+
+    let style = {height:"100%", width: "50%", position: "absolute"};
+    style[left ? "left" : "right"] = 0;
+    return <div ref={drop} style={style} />
+}
+
 export function Site(props) {
     const [, drag] = useDrag({
         item: {type: "site", id: props.id}

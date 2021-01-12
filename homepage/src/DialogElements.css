@@ -68,6 +68,10 @@ div.settings-dialog {
   padding: 15px 30px;
 }
 
+.settings-dialog input[type=range] {
+  width: 100%;
+}
+
 .settings-dialog label {
   margin: 5px 0
 }

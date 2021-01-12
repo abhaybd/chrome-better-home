@@ -25,6 +25,8 @@ export function SettingsDialog(props) {
         data.layout = storageGet("layout");
         data.hideAdd = storageGet("hideAdd");
         data.background = storageGet("background");
+        data.hideClock = storageGet("hideClock");
+        data.iconsPerRow = storageGet("iconsPerRow");
         let dataStr = JSON.stringify(data);
         download(dataStr, "config.json", "application/json");
     }
@@ -60,6 +62,11 @@ export function SettingsDialog(props) {
                     <input type="checkbox" checked={props.hideClock}
                            onChange={e => props.setHideClock(e.target.checked)}/>
                     Hide clock
+                </label>
+                <label>
+                    Number of icons per row: {props.iconsPerRow}
+                    <input type="range" min="3" max="10" value={props.iconsPerRow}
+                           onChange={e => props.setIconsPerRow(e.target.value)}/>
                 </label>
                 <label>
                     <div className="btn">Upload background image</div>

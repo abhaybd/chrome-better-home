@@ -31,6 +31,7 @@ function App() {
     const [dialogsDisabled, setDialogsDisabled] = useState(false);
     const [background, setBackground] = useState(null);
     const [hideClock, setHideClock] = useState(false);
+    const [iconsPerRow, setIconsPerRow] = useState(5);
 
     useEffect(function () {
         let saved = storageGet("layout");
@@ -49,6 +50,7 @@ function App() {
         setHideAdd(storageGet("hideAdd", false));
         setBackground(storageGet("background"));
         setHideClock(storageGet("hideClock", false));
+        setIconsPerRow(storageGet("iconsPerRow", 5));
     }, []);
 
     useEffect(function () {
@@ -70,6 +72,10 @@ function App() {
     useEffect(function () {
         storageSet("background", background);
     }, [background]);
+
+    useEffect(function () {
+        storageSet("iconsPerRow", iconsPerRow);
+    }, [iconsPerRow]);
 
     function showConfigDialog(id) {
         if (!dialogsDisabled) {
@@ -189,9 +195,12 @@ function App() {
         }
     }
 
-    function loadData({layout, hideAdd}) {
+    function loadData({layout, hideAdd, background, hideClock, iconsPerRow}) {
         setSites(layout);
         setHideAdd(hideAdd);
+        setBackground(background);
+        setHideClock(hideClock);
+        setIconsPerRow(iconsPerRow);
     }
 
     function move(id, toId, intoFolder = false) {
@@ -242,7 +251,8 @@ function App() {
     if (showSettings) {
         settingsDialog = <SettingsDialog hideAdd={hideAdd} setHideAdd={setHideAdd} close={() => setShowSettings(false)}
                                          clearStorage={clearStorage} loadData={loadData} setBackground={setBackground}
-                                         hideClock={hideClock} setHideClock={setHideClock}/>;
+                                         hideClock={hideClock} setHideClock={setHideClock} iconsPerRow={iconsPerRow}
+                                         setIconsPerRow={setIconsPerRow}/>;
     }
 
     return (
@@ -258,7 +268,8 @@ function App() {
                     {hideClock ? null : <Clock/>}
                     <DndProvider backend={HTML5Backend}>
                         <SiteGroup showDialog={showConfigDialog} sites={sites} add={showAddDialog} id={-1}
-                                   setOpen={setFolderOpen} hideAdd={hideAdd} move={move}/>
+                                   setOpen={setFolderOpen} hideAdd={hideAdd} move={move}
+                                   width={`${iconsPerRow * 100}px`}/>
                     </DndProvider>
                 </div>
             </header>

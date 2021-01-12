@@ -5,7 +5,7 @@ export function storageGet(key, defaultVal, persistent=true) {
     } else {
         ret = sessionStorage.getItem(key);
     }
-    return JSON.parse(ret) ?? defaultVal;
+    return ret ? JSON.parse(ret) : defaultVal;
 }
 
 export function storageSet(key, val, persistent=true) {

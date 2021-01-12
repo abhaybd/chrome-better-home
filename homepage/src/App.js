@@ -6,6 +6,7 @@ import {storageGet, storageSet, storageClear} from "./Storage";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import DefaultBackground from "./space.jpg";
+import Clock from "./ClockWidget";
 
 const defaultSites = [
     {id: "0", title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
@@ -29,8 +30,9 @@ function App() {
     const [hideAdd, setHideAdd] = useState(false);
     const [dialogsDisabled, setDialogsDisabled] = useState(false);
     const [background, setBackground] = useState(null);
+    const [hideClock, setHideClock] = useState(false);
 
-    useEffect(function() {
+    useEffect(function () {
         let saved = storageGet("layout");
         if (saved) {
             setSites(saved);
@@ -46,21 +48,26 @@ function App() {
 
         setHideAdd(storageGet("hideAdd", false));
         setBackground(storageGet("background"));
+        setHideClock(storageGet("hideClock", false));
     }, []);
 
-    useEffect(function() {
+    useEffect(function () {
         storageSet("layout", sites);
     }, [sites]);
 
-    useEffect(function() {
+    useEffect(function () {
         storageSet("hideAdd", hideAdd);
     }, [hideAdd]);
 
-    useEffect(function() {
+    useEffect(function () {
+        storageSet("hideClock", hideClock);
+    }, [hideClock]);
+
+    useEffect(function () {
         setDialogsDisabled(!!currentlyEditing || !!currentlyAddingTo || !!showSettings);
     }, [currentlyAddingTo, currentlyEditing, showSettings]);
 
-    useEffect(function() {
+    useEffect(function () {
         storageSet("background", background);
     }, [background]);
 
@@ -168,7 +175,7 @@ function App() {
                 for (let j = 0; j < data.content.length; j++) {
                     let d = data.content[j];
                     if (d.id === id) {
-                        return {index: [i,j], elem: d};
+                        return {index: [i, j], elem: d};
                     }
                 }
             }
@@ -190,7 +197,7 @@ function App() {
 
     let config = null;
     if (currentlyEditing !== null) {
-        let {index: idx, elem:{title, url}} = getElementById(currentlyEditing);
+        let {index: idx, elem: {title, url}} = getElementById(currentlyEditing);
         config = <ConfigDialog title={title} url={url} close={() => setCurrentlyEditing(null)}
                                callback={(title, url, del) => updateSite(idx, title, url, del)}/>
     }
@@ -205,7 +212,8 @@ function App() {
     let settingsDialog = null;
     if (showSettings) {
         settingsDialog = <SettingsDialog hideAdd={hideAdd} setHideAdd={setHideAdd} close={() => setShowSettings(false)}
-                                         clearStorage={clearStorage} loadData={loadData} setBackground={setBackground}/>;
+                                         clearStorage={clearStorage} loadData={loadData} setBackground={setBackground}
+                                         hideClock={hideClock} setHideClock={setHideClock}/>;
     }
 
     function move(id, toId, intoFolder = false) {
@@ -233,8 +241,8 @@ function App() {
         } else {
             toArr = copy[toIdx[0]].content;
         }
-        fromArr.splice(idx[idx.length-1], 1);
-        toArr.splice(toIdx[toIdx.length-1], 0, elem);
+        fromArr.splice(idx[idx.length - 1], 1);
+        toArr.splice(toIdx[toIdx.length - 1], 0, elem);
         setSites(copy);
     }
 
@@ -248,6 +256,7 @@ function App() {
                     {settingsDialog}
                     {config}
                     {addDialog}
+                    {hideClock ? null : <Clock/>}
                     <DndProvider backend={HTML5Backend}>
                         <SiteGroup showDialog={showConfigDialog} sites={sites} add={showAddDialog} id={-1}
                                    setOpen={setFolderOpen} hideAdd={hideAdd} move={move}/>

@@ -57,6 +57,10 @@ export function SettingsDialog(props) {
                     Hide 'add' button
                 </label>
                 <label>
+                    <input type="checkbox" checked={props.hideClock} onChange={e => props.setHideClock(e.target.checked)}/>
+                    Hide clock
+                </label>
+                <label>
                     <div className="btn">Upload background image</div>
                     <input type="file" accept="image/*" onChange={onBackgroundFileChange} hidden/>
                 </label>

@@ -1,5 +1,5 @@
 import './App.css';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {RootDropTarget, SettingsButton, SiteGroup} from "./PageElements";
 import {AddDialog, ConfigDialog, SettingsDialog} from "./DialogElements";
 import {storageGet, storageSet, storageClear} from "./Storage";
@@ -33,6 +33,24 @@ function App() {
     const [hideClock, setHideClock] = useState(false);
     const [iconsPerRow, setIconsPerRow] = useState(5);
 
+    const cloneData = useCallback(function() {
+        let copy = [];
+        for (let data of sites) {
+            if (data.content !== undefined) {
+                let content = [];
+                for (let site of data.content) {
+                    content.push(Object.assign({}, site));
+                }
+                let d = Object.assign({}, data);
+                d.content = content;
+                copy.push(d);
+            } else {
+                copy.push(Object.assign({}, data));
+            }
+        }
+        return copy;
+    }, [sites]);
+
     useEffect(function () {
         let saved = storageGet("layout");
         if (saved) {
@@ -57,8 +75,15 @@ function App() {
     }, []);
 
     useEffect(function () {
-        storageSet("layout", sites);
-    }, [sites]);
+        let copy = cloneData();
+        // Don't save the folders as being open
+        for (let data of copy) {
+            if (data.isOpen === true) {
+                data.isOpen = false;
+            }
+        }
+        storageSet("layout", copy);
+    }, [sites, cloneData]);
 
     useEffect(function () {
         storageSet("hideAdd", hideAdd);
@@ -96,24 +121,6 @@ function App() {
         if (!dialogsDisabled) {
             setShowSettings(true);
         }
-    }
-
-    function cloneData() {
-        let copy = [];
-        for (let data of sites) {
-            if (data.content !== undefined) {
-                let content = [];
-                for (let site of data.content) {
-                    content.push(Object.assign({}, site));
-                }
-                let d = Object.assign({}, data);
-                d.content = content;
-                copy.push(d);
-            } else {
-                copy.push(Object.assign({}, data));
-            }
-        }
-        return copy;
     }
 
     function setFolderOpen(id, open) {

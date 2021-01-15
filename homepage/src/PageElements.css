@@ -43,8 +43,9 @@
 
 .options-button {
   position: absolute;
-  top: -5px;
+  top: 0;
   right: 0;
+  font-size: calc(10px + 2vmin);
 }
 
 .site-group {

@@ -1,11 +1,7 @@
-export function storageGet(key, defaultVal, persistent = true) {
+export function storageGet(key, defaultVal) {
     let ret = null;
     try {
-        if (persistent === true) {
-            ret = localStorage.getItem(key);
-        } else {
-            ret = sessionStorage.getItem(key);
-        }
+        ret = localStorage.getItem(key);
         return ret ? JSON.parse(ret) : defaultVal;
     } catch (e) {
         console.log(`Error while getting value for key: ${key}. Value: ${ret}`);
@@ -14,14 +10,10 @@ export function storageGet(key, defaultVal, persistent = true) {
     }
 }
 
-export function storageSet(key, val, persistent = true) {
-    if (val) {
-        val = JSON.stringify(val);
-        if (persistent === true) {
-            localStorage.setItem(key, val);
-        } else {
-            sessionStorage.setItem(key, val);
-        }
+export function storageSet(key, val) {
+    if (val !== null && val !== undefined) {
+        let jsonStr = JSON.stringify(val);
+        localStorage.setItem(key, jsonStr);
     }
 }
 

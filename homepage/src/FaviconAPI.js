@@ -12,7 +12,7 @@ export async function getFaviconData(host) {
         reader.onloadend = function () {
             let data = reader.result;
             console.log(data);
-            storageSet(host, data, true);
+            storageSet(host, data);
             resolve(data);
         }
         reader.readAsDataURL(blob);

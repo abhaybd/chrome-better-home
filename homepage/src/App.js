@@ -7,6 +7,7 @@ import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import DefaultBackground from "./space.jpg";
 import Clock from "./ClockWidget";
+import {clearExpiredFavicons} from "./FaviconAPI";
 
 const defaultSites = [
     {id: "0", title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
@@ -21,6 +22,8 @@ function getTimeStr() {
 function ensureProtocol(url) {
     return url && !url.match(/^http[s]?:\/\//) ? "http://" + url : url;
 }
+
+clearExpiredFavicons();
 
 function App() {
     const [sites, setSites] = useState([]);

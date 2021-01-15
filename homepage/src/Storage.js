@@ -17,7 +17,14 @@ export function storageSet(key, val) {
     }
 }
 
+export function storageDelete(key) {
+    localStorage.removeItem(key);
+}
+
 export function storageClear() {
     localStorage.clear();
-    sessionStorage.clear();
+}
+
+export function storageKeys() {
+    return Object.keys(localStorage);
 }

@@ -95,8 +95,8 @@ export function HelpDialog({close}) {
                 <p>Welcome to Hearth - A Better Homepage.</p>
                 <h4>Settings Menu</h4>
                 <p>
-                    Hover your mouse over the top right corner to show the settings button.
-                    Click it to access the settings page, where you can configure your homepage experience.
+                    Click the settings button in the top right corner to access the settings page,
+                    where you can configure your homepage experience.
                     You can upload new background images, configure the number of columns, hide the add button, and more!
                 </p>
                 <h4>Sites & Folders</h4>
@@ -108,7 +108,13 @@ export function HelpDialog({close}) {
                     </p>
                     <p>
                         To edit the attributes of a site or folder, hover your mouse over its icon, and click the ⋮ button
-                        in the top right. This will allow you to edit the title of the icon, as well as its URL if it's a site.
+                        in the top right corner. This will allow you to edit the title of the icon,
+                        as well as its URL if it's a site.
+                    </p>
+                    <p>
+                        To add new sites or folders, make sure the add button is showing (check your settings) and just
+                        click the button with the big + symbol. A dialog will pop up, allowing you to configure and add
+                        a new site or folder.
                     </p>
                 </div>
             </div>

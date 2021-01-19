@@ -36,6 +36,7 @@ function App() {
     const [hideClock, setHideClock] = useState(false);
     const [iconsPerRow, setIconsPerRow] = useState(5);
     const [showHelp, setShowHelp] = useState(false);
+    const [autoHideSettings, setAutoHideSettings] = useState(false);
 
     const cloneData = useCallback(function() {
         let copy = [];
@@ -74,14 +75,16 @@ function App() {
         setHideClock(storageGet("hideClock", false));
         setIconsPerRow(storageGet("iconsPerRow", 5));
 
-        // yes, this is fucked up. whatever. It silences the (possibly) harmless invariant errors from react-dnd.
-        window.onerror = e => e === "Uncaught Invariant Violation: Expected to find a valid target.";
-
         let seenHelp = storageGet("seenHelp", false);
         if (!seenHelp) {
             setShowHelp(true);
             storageSet("seenHelp", true);
         }
+
+        setAutoHideSettings(storageGet("autoHideSettings", false));
+
+        // yes, this is fucked up. whatever. It silences the (possibly) harmless invariant errors from react-dnd.
+        window.onerror = e => e === "Uncaught Invariant Violation: Expected to find a valid target.";
     }, []);
 
     useEffect(function () {
@@ -114,6 +117,10 @@ function App() {
     useEffect(function () {
         storageSet("iconsPerRow", iconsPerRow);
     }, [iconsPerRow]);
+
+    useEffect(function() {
+        storageSet("autoHideSettings", autoHideSettings);
+    }, [autoHideSettings]);
 
     function showConfigDialog(id) {
         if (!dialogsDisabled) {
@@ -215,12 +222,13 @@ function App() {
         }
     }
 
-    function loadData({layout, hideAdd, background, hideClock, iconsPerRow}) {
+    function loadData({layout, hideAdd, background, hideClock, iconsPerRow, autoHideSettings}) {
         setSites(layout);
         setHideAdd(hideAdd);
         setBackground(background);
         setHideClock(hideClock);
         setIconsPerRow(iconsPerRow);
+        setAutoHideSettings(autoHideSettings);
     }
 
     // to is either an index (array of indices) or an id
@@ -280,7 +288,8 @@ function App() {
         settingsDialog = <SettingsDialog hideAdd={hideAdd} setHideAdd={setHideAdd} close={() => setShowSettings(false)}
                                          clearStorage={clearStorage} loadData={loadData} setBackground={setBackground}
                                          hideClock={hideClock} setHideClock={setHideClock} iconsPerRow={iconsPerRow}
-                                         setIconsPerRow={setIconsPerRow}/>;
+                                         setIconsPerRow={setIconsPerRow} autoHideSettings={autoHideSettings}
+                                         setAutoHideSettings={setAutoHideSettings}/>;
     }
 
     let helpDialog = null;
@@ -292,7 +301,7 @@ function App() {
         <div className="App" style={{background: `url(${background ?? DefaultBackground}) center`}}>
             <header className="App-header" onClick={() => closeAllFolders()}>
                 <div onClick={e => e.stopPropagation()}>
-                    <SettingsButton openSettings={showSettingsMenu}/>
+                    <SettingsButton openSettings={showSettingsMenu} autoHide={autoHideSettings}/>
                 </div>
                 <div onClick={e => e.stopPropagation()}>
                     {helpDialog}

@@ -27,6 +27,7 @@ export function SettingsDialog(props) {
         data.background = storageGet("background");
         data.hideClock = storageGet("hideClock");
         data.iconsPerRow = storageGet("iconsPerRow");
+        data.autoHideSettings = storageGet("autoHideSettings");
         let dataStr = JSON.stringify(data);
         download(dataStr, "config.json", "application/json");
     }
@@ -62,6 +63,11 @@ export function SettingsDialog(props) {
                     <input type="checkbox" checked={props.hideClock}
                            onChange={e => props.setHideClock(e.target.checked)}/>
                     Hide clock
+                </label>
+                <label>
+                    <input type="checkbox" checked={props.autoHideSettings}
+                           onChange={e => props.setAutoHideSettings(e.target.checked)}/>
+                    Auto-hide settings button
                 </label>
                 <label>
                     Number of icons per row: {props.iconsPerRow}

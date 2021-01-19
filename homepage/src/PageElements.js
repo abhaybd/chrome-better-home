@@ -21,7 +21,7 @@ export function SettingsButton(props) {
     const [show, setShow] = useState(false);
 
     let button = null;
-    if (show) {
+    if (show || !props.autoHide) {
         button = (
             <div className="settings-button" onClick={() => props.openSettings()}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"

@@ -80,6 +80,36 @@ export function SettingsDialog(props) {
     );
 }
 
+export function HelpDialog({close}) {
+    return (
+        <div className="dialog-container">
+            <div className="dialog" style={{width: "600px", fontSize: "17px"}}>
+                <DialogClose close={close}/>
+                <h2>Hearth</h2>
+                <p>Welcome to Hearth - A Better Homepage.</p>
+                <h4>Settings Menu</h4>
+                <p>
+                    Hover your mouse over the top right corner to show the settings button.
+                    Click it to access the settings page, where you can configure your homepage experience.
+                    You can upload new background images, configure the number of columns, hide the add button, and more!
+                </p>
+                <h4>Sites & Folders</h4>
+                <div>
+                    <p>
+                        Your homepage consists of many sites and folders, which help you navigate the web quickly.
+                        You can have an arbitrary amount of sites on your homepage, as well as as many sites as you want
+                        in a folder. A folder cannot contain another folder.
+                    </p>
+                    <p>
+                        To edit the attributes of a site or folder, hover your mouse over its icon, and click the ⋮ button
+                        in the top right. This will allow you to edit the title of the icon, as well as its URL if it's a site.
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export function AddDialog(props) {
     const [type, setType] = useState("site");
     const [title, setTitle] = useState("");

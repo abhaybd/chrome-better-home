@@ -1,7 +1,7 @@
 import './App.css';
 import React, {useState, useEffect, useCallback} from 'react';
 import {RootDropTarget, SettingsButton, SiteGroup} from "./PageElements";
-import {AddDialog, ConfigDialog, SettingsDialog} from "./DialogElements";
+import {AddDialog, ConfigDialog, SettingsDialog, HelpDialog} from "./DialogElements";
 import {storageGet, storageSet, storageClear} from "./Storage";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
@@ -35,6 +35,7 @@ function App() {
     const [background, setBackground] = useState(null);
     const [hideClock, setHideClock] = useState(false);
     const [iconsPerRow, setIconsPerRow] = useState(5);
+    const [showHelp, setShowHelp] = useState(false);
 
     const cloneData = useCallback(function() {
         let copy = [];
@@ -75,6 +76,12 @@ function App() {
 
         // yes, this is fucked up. whatever. It silences the (possibly) harmless invariant errors from react-dnd.
         window.onerror = e => e === "Uncaught Invariant Violation: Expected to find a valid target.";
+
+        let seenHelp = storageGet("seenHelp", false);
+        if (!seenHelp) {
+            setShowHelp(true);
+            storageSet("seenHelp", true);
+        }
     }, []);
 
     useEffect(function () {
@@ -97,8 +104,8 @@ function App() {
     }, [hideClock]);
 
     useEffect(function () {
-        setDialogsDisabled(!!currentlyEditing || !!currentlyAddingTo || !!showSettings);
-    }, [currentlyAddingTo, currentlyEditing, showSettings]);
+        setDialogsDisabled(!!currentlyEditing || !!currentlyAddingTo || !!showSettings || !!showHelp);
+    }, [currentlyAddingTo, currentlyEditing, showSettings, showHelp]);
 
     useEffect(function () {
         storageSet("background", background);
@@ -276,6 +283,11 @@ function App() {
                                          setIconsPerRow={setIconsPerRow}/>;
     }
 
+    let helpDialog = null;
+    if (showHelp) {
+        helpDialog = <HelpDialog close={() => setShowHelp(false)}/>
+    }
+
     return (
         <div className="App" style={{background: `url(${background ?? DefaultBackground}) center`}}>
             <header className="App-header" onClick={() => closeAllFolders()}>
@@ -283,6 +295,7 @@ function App() {
                     <SettingsButton openSettings={showSettingsMenu}/>
                 </div>
                 <div onClick={e => e.stopPropagation()}>
+                    {helpDialog}
                     {settingsDialog}
                     {config}
                     {addDialog}

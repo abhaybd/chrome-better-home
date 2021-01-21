@@ -1,6 +1,6 @@
 {
   "name": "Hearth",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "A clean, minimal, and customizable homepage.",
   "content_security_policy": "script-src https://www.googletagmanager.com/ 'self'; object-src 'self'",
   "manifest_version": 2,

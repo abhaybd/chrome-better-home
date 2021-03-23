@@ -10,18 +10,8 @@ export async function getFaviconData(host) {
         storageSet(host, {expiry: newExpiryDate, data: data});
         return data;
     }
-    let response = await fetch("https://cors-anywhere.herokuapp.com/https://s2.googleusercontent.com/s2/favicons?domain=" + host);
-    let blob = await response.blob();
-    return new Promise(resolve => {
-        let reader = new FileReader();
-        reader.onloadend = function () {
-            let data = reader.result;
-            console.log(data);
-            storageSet(host, {expiry: newExpiryDate, data: data});
-            resolve(data);
-        }
-        reader.readAsDataURL(blob);
-    });
+    let response = await fetch(`https://us-central1-chrome-better-home.cloudfunctions.net/getIcon?domain=${host}`);
+    return await response.text();
 }
 
 export async function getFaviconImg(host) {

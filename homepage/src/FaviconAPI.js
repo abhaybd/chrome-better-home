@@ -6,12 +6,21 @@ export async function getFaviconData(host) {
     let newExpiryDate = Date.now() + CACHE_LIFESPAN;
     let cached = storageGet(host);
     if (cached) {
-        let data = cached.data ?? cached; // backwards compatibility with old format w/o pod format
-        storageSet(host, {expiry: newExpiryDate, data: data});
+        let data;
+        if (cached.data) {
+            data = cached.data;
+        } else {
+            // if we don't have an expiry date, set it now
+            data = cached;
+            storageSet(host, {expiry: newExpiryDate, data: cached});
+        }
         return data;
     }
     let response = await fetch(`https://us-central1-chrome-better-home.cloudfunctions.net/getIcon?domain=${host}`);
-    return await response.text();
+    let data = await response.text();
+    // cache the data
+    storageSet(host, {expiry: newExpiryDate, data: data});
+    return data;
 }
 
 export async function getFaviconImg(host) {

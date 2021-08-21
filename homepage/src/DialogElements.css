@@ -91,11 +91,17 @@ h4 {
   margin-bottom: 3px;
 }
 
+.settings-dialog label {
+  font-size: 15px;
+  margin: 0;
+}
+
 .settings-dialog .btn {
   padding: 5px;
   border-radius: 20px;
+  margin: 2px;
 }
 
-.settings-dialog label {
-  font-size: 15px;
+.settings-dialog .btn.data-settings {
+  background: #EF6666
 }

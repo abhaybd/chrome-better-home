@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import "./DialogElements.css";
 import {storageGet} from "./Storage";
 import download from "downloadjs";
+import {clearAllFavicons} from "./FaviconAPI";
 
 export function SettingsDialog(props) {
     function onConfigFileChange(event) {
@@ -43,6 +44,11 @@ export function SettingsDialog(props) {
         reader.readAsDataURL(file);
     }
 
+    function clearFavicons() {
+        clearAllFavicons();
+        alert("Favicon cache cleared. Reload the page to refresh the data.")
+    }
+
     return (
         <div className="dialog-container">
             <div className="dialog settings-dialog">
@@ -80,7 +86,8 @@ export function SettingsDialog(props) {
                 </label>
                 <div className="btn" onClick={() => props.setBackground(null)}>Reset background image</div>
                 <h4>Data</h4>
-                <div className="btn" onClick={props.clearStorage} style={{background: "#EF6666"}}>Clear all data</div>
+                <div className="btn data-settings" onClick={clearFavicons}>Clear favicon cache</div>
+                <div className="btn data-settings" onClick={props.clearStorage}>Clear all data</div>
             </div>
         </div>
     );

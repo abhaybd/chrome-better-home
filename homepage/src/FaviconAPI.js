@@ -6,7 +6,8 @@ const API_PREFIX = "https://us-central1-chrome-better-home.cloudfunctions.net/ge
 
 export async function getFaviconData(host) {
     let newExpiryDate = Date.now() + CACHE_LIFESPAN;
-    let cached = storageGet(host);
+    let cacheName = FAVICON_PREFIX + host;
+    let cached = storageGet(cacheName);
     if (cached) {
         return cached.data;
     }
@@ -14,7 +15,7 @@ export async function getFaviconData(host) {
     let data = await response.text();
     if (response.ok) {
         // cache the data
-        storageSet(FAVICON_PREFIX + host, {expiry: newExpiryDate, data: data});
+        storageSet(cacheName, {expiry: newExpiryDate, data: data});
         return data;
     } else {
         console.error(`An error occurred while fetching favicon data! Status=${response.status}, Message=${data}`)

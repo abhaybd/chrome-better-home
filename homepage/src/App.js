@@ -7,7 +7,7 @@ import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import DefaultBackground from "./space.jpg";
 import Clock from "./ClockWidget";
-import {removeFaviconData} from "./FaviconAPI";
+import {clearAllFavicons, removeFaviconData} from "./FaviconAPI";
 import {urlToDomain} from "./utils";
 
 const defaultSites = [
@@ -236,6 +236,7 @@ function App() {
     }
 
     function loadData({layout, hideAdd, background, hideClock, iconsPerRow, autoHideSettings}) {
+        clearAllFavicons();
         setSites(layout);
         setHideAdd(hideAdd);
         setBackground(background);

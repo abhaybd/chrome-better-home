@@ -25,9 +25,14 @@ exports.getIcon = functions.https.onRequest((httpReq, httpResp) => {
                     console.error(new Error(errMessage));
                 });
             }).catch(err => {
-                let errMessage = `An error occurred while fetching favicon data: ${err}`;
-                httpResp.status(500).send(errMessage);
-                console.error(new Error(errMessage));
+                if (err.statusCode === 404) {
+                    // don't signal error, just signal no content
+                    httpResp.status(204).send("Favicon not found!");
+                } else {
+                    let errMessage = `An error occurred while fetching favicon data: ${err}`;
+                    httpResp.status(500).send(errMessage);
+                    console.error(new Error(errMessage));
+                }
             });
         } else {
             httpResp.status(400).send("Must specify a domain!");

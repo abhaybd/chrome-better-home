@@ -2,14 +2,13 @@ import React, {useEffect, useState} from "react";
 import {getFaviconImg} from "./FaviconAPI";
 import "./PageElements.css";
 import {useDrag, useDrop} from "react-dnd";
+import {urlToDomain} from "./utils";
 
 async function urlToFavicon(url) {
     if (!url) {
         return null;
     }
-    const regex = /^(?:http[s]?:\/\/)?(?:www.)?([\w.]+)/;
-    let matches = url.match(regex);
-    let host = matches ? matches[1] : null;
+    let host = urlToDomain(url);
     if (host) {
         return await getFaviconImg(host);
     } else {

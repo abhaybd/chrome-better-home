@@ -7,7 +7,8 @@ import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import DefaultBackground from "./space.jpg";
 import Clock from "./ClockWidget";
-import {clearExpiredFavicons} from "./FaviconAPI";
+import {removeFaviconData} from "./FaviconAPI";
+import {urlToDomain} from "./utils";
 
 const defaultSites = [
     {id: "0", title: "Gmail", url: "https://mail.google.com/mail/u/0/"},
@@ -22,8 +23,6 @@ function getTimeStr() {
 function ensureProtocol(url) {
     return url && !url.match(/^http[s]?:\/\//) ? "http://" + url : url;
 }
-
-clearExpiredFavicons();
 
 function App() {
     const [sites, setSites] = useState([]);
@@ -169,7 +168,21 @@ function App() {
             i = idx[1];
         }
         if (del === true) {
-            arr.splice(i, 1);
+            let [removed] = arr.splice(i, 1);
+            // remove data from cache
+            if (removed.url) {
+                // remove single site
+                console.log(`Removing cached data for host: ${removed.url}`);
+                let host = urlToDomain(removed.url);
+                removeFaviconData(host);
+            } else {
+                // remove sites in folder
+                for (let site of removed.content) {
+                    console.log(`Removing cached data for host: ${site.url}`);
+                    let host = urlToDomain(site.url);
+                    removeFaviconData(host);
+                }
+            }
         } else {
             arr[i].title = title;
             if (!arr[i].content) { // if it's not a folder

@@ -1,6 +1,10 @@
 const functions = require("firebase-functions");
 const cors = require("cors")({origin: true});
-const request = require("request").defaults({encoding: null});
+
+const bent = require("bent");
+const get = bent("GET");
+
+const API_URL = "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=16&url=";
 
 exports.getIcon = functions.https.onRequest((httpReq, httpResp) => {
     if (httpReq.method.toUpperCase() !== "GET") {
@@ -10,15 +14,21 @@ exports.getIcon = functions.https.onRequest((httpReq, httpResp) => {
     return cors(httpReq, httpResp, () => {
         const domain = httpReq.query.domain;
         if ("string" === typeof (domain)) {
-			const url = `https://s2.googleusercontent.com/s2/favicons?domain=${domain}`;
-			request.get(url, function (err, resp, body) {
-				if (!err && resp.statusCode === 200) {
-					let data = "data:" + resp.headers["content-type"] + ";base64," + Buffer.from(body).toString('base64');
-					httpResp.send(data);
-				} else {
-				    httpResp.status(500).send("Some error occurred!");
-                }
-			});
+			const url = API_URL + domain;
+			get(url).then(resp => {
+			    resp.arrayBuffer().then(buffer => {
+                    let data = "data:" + resp.headers["content-type"] + ";base64," + buffer.toString('base64');
+                    httpResp.send(data);
+                }).catch(err => {
+                    let errMessage = `An error occurred while parsing favicon data: ${err}`;
+                    httpResp.status(500).send(errMessage);
+                    console.error(new Error(errMessage));
+                });
+            }).catch(err => {
+                let errMessage = `An error occurred while fetching favicon data: ${err}`;
+                httpResp.status(500).send(errMessage);
+                console.error(new Error(errMessage));
+            });
         } else {
             httpResp.status(400).send("Must specify a domain!");
         }

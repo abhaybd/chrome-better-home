@@ -1,6 +1,6 @@
 import {storageDelete, storageGet, storageKeys, storageSet} from "./Storage";
 
-const CACHE_LIFESPAN = 1000 * 60 * 60 * 24 * 7; // 1 week in milliseconds
+const CACHE_LIFESPAN = 1000 * 60 * 60 * 24 * 7 * 2; // 2 weeks in milliseconds
 const FAVICON_PREFIX = "FAVICON_";
 const API_PREFIX = "https://us-central1-chrome-better-home.cloudfunctions.net/getIcon?domain="
 

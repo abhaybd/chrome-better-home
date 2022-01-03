@@ -22,19 +22,24 @@ export async function getFaviconData(host) {
     if (cached && cached.expiry > Date.now()) {
         return cached.data;
     }
-    let response = await fetch(API_PREFIX + host);
-    let data = await response.text();
-    if (response.status === 200) {
-        // cache the data
-        storageSet(cacheName, {expiry: newExpiryDate, data: data});
-        return data;
-    } else if (response.status === 204) {
-        // no favicon found, use fallback favicon (no caching)
-        console.warn(`Favicon not found for host: ${host}`);
-        return FALLBACK_FAVICON;
-    } else {
-        console.error(`An error occurred while fetching favicon data for host=${host}! Status=${response.status}, Message=${data}`);
-        return cached ?? null;
+    try {
+        let response = await fetch(API_PREFIX + host);
+        let data = await response.text();
+        if (response.status === 200) {
+            // cache the data
+            storageSet(cacheName, {expiry: newExpiryDate, data: data});
+            return data;
+        } else if (response.status === 204) {
+            // no favicon found, use fallback favicon (no caching)
+            console.warn(`Favicon not found for host: ${host}`);
+            return cached?.data ?? FALLBACK_FAVICON;
+        } else {
+            console.error(`API returned an error for host=${host}! Status=${response.status}, Message=${data}`);
+            return cached?.data ?? FALLBACK_FAVICON;
+        }
+    } catch {
+        console.error(`An error occurred while fetching favicon for host=${host}!`);
+        return cached?.data ?? FALLBACK_FAVICON;
     }
 }
 

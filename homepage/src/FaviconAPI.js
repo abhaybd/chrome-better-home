@@ -14,6 +14,8 @@ const FALLBACK_FAVICON = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQ
     "pSSCQHVALmN9Az1euDho9Xo8vKGd2rqooA8yBcrwHgCqYR0kMkWci08t/R+W4ljDCanWTg9TJGwGNaNk3vYZ7VUdeKsYJGFNkfSzjXNrSX20" +
     "s4/h6kB81/271ghG17l+rPTAAAAAElFTkSuQmCC";
 
+export const DEFAULT_FAVICON = <img src={FALLBACK_FAVICON} alt="" />;
+
 export async function getFaviconData(host) {
     let newExpiryDate = Date.now() + CACHE_LIFESPAN;
     let cacheName = FAVICON_PREFIX + host;

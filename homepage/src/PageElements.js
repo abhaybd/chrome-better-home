@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {getFaviconImg} from "./FaviconAPI";
+import {DEFAULT_FAVICON, getFaviconImg} from "./FaviconAPI";
 import "./PageElements.css";
 import {useDrag, useDrop} from "react-dnd";
 import {urlToDomain} from "./utils";
@@ -116,7 +116,7 @@ export function Site(props) {
         }
     });
 
-    const [favicon, setFavicon] = useState(null);
+    const [favicon, setFavicon] = useState(DEFAULT_FAVICON);
     const [showSettings, setShowSettings] = useState(false);
 
     useEffect(() => {

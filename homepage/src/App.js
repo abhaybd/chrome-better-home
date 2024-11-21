@@ -312,7 +312,7 @@ function App() {
     }
 
     return (
-        <div className="App" style={{background: `url(${background ?? DefaultBackground}) center`}}>
+        <div className="App" style={{background: `url(${background ?? DefaultBackground}) center`, backgroundSize: "cover"}}>
             <header className="App-header" onClick={() => closeAllFolders()}>
                 <div onClick={e => e.stopPropagation()}>
                     <SettingsButton openSettings={showSettingsMenu} autoHide={autoHideSettings}/>

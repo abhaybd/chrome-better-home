@@ -1,13 +1,15 @@
 {
   "name": "Hearth",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "A clean, minimal, and customizable homepage.",
-  "content_security_policy": "script-src https://www.googletagmanager.com/ 'self'; object-src 'self'",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "icons": {
-	"128": "icon128.png"
+    "128": "icon128.png"
   },
   "chrome_url_overrides": {
-	"newtab": "build/index.html"
+    "newtab": "build/index.html"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src https://www.googletagmanager.com/ 'self'; object-src 'self'"
   }
 }

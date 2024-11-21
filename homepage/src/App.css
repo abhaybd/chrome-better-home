@@ -2,11 +2,6 @@
   text-align: center;
 }
 
-html {
-  background: url("space.jpg") center;
-  background-size: cover;
-}
-
 .App-header {
   min-height: 100vh;
   display: flex;
